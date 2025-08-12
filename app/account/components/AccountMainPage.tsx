@@ -110,7 +110,7 @@ export default function AccountMainPage() {
             console.log('Found existing passes in localStorage:', passes);
             
             // Ensure unique IDs by adding timestamp if duplicates exist
-            const uniquePasses = passes.map((pass: UserPass, index: number) => {
+            const uniquePasses: UserPass[] = passes.map((pass: any, index: number) => {
               // If ID is 1, make it unique by adding timestamp
               if (pass.id === 1) {
                 const uniqueId = Date.now() + index;
@@ -122,7 +122,7 @@ export default function AccountMainPage() {
             
             // Merge with API passes, avoiding duplicates
             const existingIds = new Set(allPasses.map(p => p.id));
-            const uniqueLocalPasses = uniquePasses.filter(pass => !existingIds.has(pass.id));
+            const uniqueLocalPasses = uniquePasses.filter((pass: UserPass) => !existingIds.has(pass.id));
             
             allPasses = [...allPasses, ...uniqueLocalPasses];
           } catch (parseError) {

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { User, ReceiptIndianRupeeIcon, DeleteIcon } from 'lucide-react';
+import { User, Settings } from 'lucide-react';
 
 // Custom Delete Icon
-const DeleteIcon = ({ className }: { className?: string }) => (
+const CustomDeleteIcon = ({ className }: { className?: string }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width="24" 
@@ -24,7 +24,7 @@ const DeleteIcon = ({ className }: { className?: string }) => (
 );
 
 // Custom Receipt Indian Rupee Icon
-const ReceiptIndianRupeeIcon = ({ className }: { className?: string }) => (
+const CustomReceiptIcon = ({ className }: { className?: string }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     width="24" 
@@ -80,7 +80,7 @@ export default function AccountHeader({
             }`}
           >
             <div className="flex items-center space-x-2">
-              <ReceiptIndianRupeeIcon className="w-4 h-4 text-primary" />
+              <CustomReceiptIcon className="w-4 h-4 text-primary" />
               <span>My Passes ({userPassesCount})</span>
             </div>
           </button>
@@ -93,7 +93,7 @@ export default function AccountHeader({
             }`}
           >
             <div className="flex items-center space-x-2">
-              <DeleteIcon className="w-4 h-4" />
+              <Settings className="w-4 h-4" />
               <span>Settings</span>
             </div>
           </button>

@@ -83,7 +83,7 @@ export default function MainPageMain() {
             handleAuthClick={handleAuthClick} 
             handleSignOut={handleSignOut} 
           />
-          <HeroSection handleAuthClick={handleAuthClick} />
+          <HeroSection />
           <PlatformsSection 
             platforms={platforms} 
             handlePlatformClick={handlePlatformClick} 
