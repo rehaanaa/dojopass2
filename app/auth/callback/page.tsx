@@ -20,10 +20,12 @@ export default function AuthCallback() {
         }
 
         if (data.session) {
-          // Successfully authenticated, redirect to pass page
+          // Successfully authenticated, redirect directly to pass page
+          console.log('User authenticated, redirecting to pass page');
           router.push('https://dojopass.store/pass');
         } else {
           // No session, redirect to home
+          console.log('No session found, redirecting to home');
           router.push('https://dojopass.store');
         }
       } catch (error) {
