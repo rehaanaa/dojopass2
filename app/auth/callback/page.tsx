@@ -12,23 +12,23 @@ export default function AuthCallback() {
       try {
         // Handle the OAuth callback
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error) {
           console.error('Auth callback error:', error);
-          router.push('/?error=auth_failed');
+          router.push('https://dojopass.store?error=auth_failed');
           return;
         }
 
         if (data.session) {
           // Successfully authenticated, redirect to pass page
-          router.push('/pass');
+          router.push('https://dojopass.store/pass');
         } else {
           // No session, redirect to home
-          router.push('/');
+          router.push('https://dojopass.store');
         }
       } catch (error) {
         console.error('Unexpected error in auth callback:', error);
-        router.push('/?error=unexpected');
+        router.push('https://dojopass.store?error=unexpected');
       }
     };
 

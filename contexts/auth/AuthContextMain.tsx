@@ -7,7 +7,7 @@ import AuthStorageManager from './AuthStorageManager';
 import AuthUserManager from './AuthUserManager';
 import AuthAutoLogin from './AuthAutoLogin';
 import AuthSessionManager from './AuthSessionManager';
-import AuthGoogleSignIn from './AuthGoogleSignIn';
+import { signInWithGoogle as signInWithGoogleUtil } from './AuthGoogleSignIn';
 import AuthSignOut from './AuthSignOut';
 
 import AuthLogout from './AuthLogout';
@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { createOrUpdateDojoUser, getExistingUser } = AuthUserManager();
   const { autoLogin: autoLoginUtil } = AuthAutoLogin();
   const { getInitialSession, handleAuthStateChange } = AuthSessionManager();
-  const { signInWithGoogle: signInWithGoogleUtil } = AuthGoogleSignIn();
+
   const { signOut: signOutUtil } = AuthSignOut();
 
   const { logout: logoutUtil } = AuthLogout();
@@ -97,7 +97,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = async () => {
-    await signInWithGoogleUtil();
+    try {
+      setLoading(true);
+      const result = await signInWithGoogleUtil();
+      console.log('Google sign-in initiated:', result);
+      // The redirect will happen automatically via Supabase
+    } catch (error) {
+      console.error('Google sign-in failed:', error);
+      // Handle error appropriately
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signOut = async () => {
