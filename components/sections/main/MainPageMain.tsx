@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Navigation from '../Navigation';
 import HeroSection from '../HeroSection';
@@ -18,6 +19,7 @@ export default function MainPageMain() {
   const [platforms, setPlatforms] = useState<any[]>([]);
   const [passes, setPasses] = useState<any[]>([]);
   const { user, signOut, signInWithGoogle, loading } = useAuth();
+  const router = useRouter();
 
   // Import all main page utilities
   const featureIconMapper = MainFeatureIconMapper();
@@ -45,11 +47,23 @@ export default function MainPageMain() {
     setPasses(staticPasses);
   }, []);
 
-  // Add immediate redirect for authenticated users
+  // CRITICAL: Immediate redirect for authenticated users
   useEffect(() => {
+    console.log('Auth state changed:', { user: !!user, loading, userEmail: user?.email });
+    
     if (user && !loading) {
-      // Immediately redirect to pass page if user is authenticated
-      window.location.href = '/pass';
+      console.log('User authenticated, redirecting to pass page:', user.email);
+      // Force redirect to pass page - this ensures dojopass.store becomes /pass page
+      setTimeout(() => {
+        if (window.location.pathname === '/') {
+          console.log('Forcing redirect to /pass page');
+          window.location.href = '/pass';
+        }
+      }, 100);
+    } else if (loading) {
+      console.log('Still loading authentication...');
+    } else if (!user) {
+      console.log('No user found, showing landing page');
     }
   }, [user, loading]);
 
@@ -64,6 +78,19 @@ export default function MainPageMain() {
   const handlePlatformClick = (platform: any) => {
     handlePlatformClickUtil(platform, user, handleAuthClick);
   };
+
+  // If user is logged in, show loading and redirect
+  if (user && !loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground mb-2">Redirecting to passes...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Please wait...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -81,7 +108,7 @@ export default function MainPageMain() {
         </div>
       )}
 
-      {/* Only show content if not loading and user is not authenticated */}
+      {/* Only show landing page content if not loading and user is not authenticated */}
       {!loading && !user && (
         <>
           <Navigation 
