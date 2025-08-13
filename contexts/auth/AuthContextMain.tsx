@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      (event: string, session: Session | null) => {
         handleAuthStateChange(
           event,
           session,
@@ -70,10 +70,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       const result = await signInWithGoogle();
-      console.log('Google sign-in initiated:', result);
-      // The redirect will happen automatically via Supabase
+      
+      if (result.error) {
+        // Show user-friendly error message
+        if (result.error.message === 'Supabase not configured. Please add environment variables to enable authentication.') {
+          alert('Authentication is not configured. Please contact support.');
+        } else {
+          alert(`Sign-in failed: ${result.error.message}`);
+        }
+        console.error('Google sign-in failed:', result.error);
+      } else {
+        console.log('Google sign-in initiated successfully');
+        // The redirect will happen automatically via Supabase
+      }
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      alert('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
