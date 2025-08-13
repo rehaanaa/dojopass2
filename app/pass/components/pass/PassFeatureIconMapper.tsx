@@ -88,13 +88,10 @@ export default function PassFeatureIconMapper() {
       'Custom Playlists': <Music className="w-3 h-3" />,
       
       // Database-specific features
-      '4K Ultra HD': <Video className="w-3 h-3" />,
       '4 Screens': <Tv className="w-3 h-3" />,
       'Original Content': <Theater className="w-3 h-3" />,
-      'HD Quality': <Video className="w-3 h-3" />,
       '2 Screens': <Tv className="w-3 h-3" />,
       'High-quality Audio': <Headphones className="w-3 h-3" />,
-      'Offline Downloads': <Download className="w-3 h-3" />,
       'Ad-Free': <CheckCircle className="w-3 h-3" />,
       'Family Friendly': <Users className="w-3 h-3" />,
       '4K HDR': <Video className="w-3 h-3" />,

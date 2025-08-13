@@ -17,7 +17,7 @@ export default function PayMethodMain({
   isProcessing 
 }: PayMethodMainProps) {
   const [upiId, setUpiId] = useState('');
-  const [selectedMethod, setSelectedMethod] = useState<'upi'>('upi');
+  const [selectedMethod, setSelectedMethod] = useState<'card' | 'paypal' | 'upi'>('upi');
   const [showQR, setShowQR] = useState(true); // Changed to true to show QR by default
   const [showPaymentInstructions, setShowPaymentInstructions] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);

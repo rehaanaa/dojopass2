@@ -95,12 +95,8 @@ export default function FeatureIconMapper() {
       'Exclusive Shows': <Theater className="w-4 h-4" />,
       
       // Platform-specific features from database
-      '4K Ultra HD': <Video className="w-4 h-4" />,
       '4 Screens': <Tv className="w-4 h-4" />,
       'Original Content': <Theater className="w-4 h-4" />,
-      'High Quality Audio': <Headphones className="w-4 h-4" />,
-      'Offline Downloads': <Download className="w-4 h-4" />,
-      'Ad-Free': <CheckCircle className="w-4 h-4" />,
       'Family Friendly': <Users className="w-4 h-4" />,
       '4K HDR': <Video className="w-4 h-4" />,
       'Multiple Profiles': <Users className="w-4 h-4" />,
