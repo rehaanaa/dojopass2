@@ -43,16 +43,19 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
     return null;
   };
 
-  // Fetch user passes from localStorage
-  const fetchUserPasses = () => {
-    const storedPasses = localStorage.getItem('user_purchased');
-    if (storedPasses) {
-      try {
-        setUserPasses(JSON.parse(storedPasses));
-      } catch (error) {
-        // Handle error silently
+  // Get user passes from localStorage (fallback only)
+  const getUserPassesFromStorage = () => {
+    if (typeof window !== 'undefined') {
+      const storedPasses = localStorage.getItem('user_purchased');
+      if (storedPasses) {
+        try {
+          return JSON.parse(storedPasses);
+        } catch (error) {
+          return [];
+        }
       }
     }
+    return [];
   };
 
   useEffect(() => {
@@ -68,14 +71,15 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
     };
   }, []);
 
-  // Auto-login and fetch data on component mount
+  // Auto-login and get basic user data on component mount
   useEffect(() => {
     const initializeUser = async () => {
       // Try to auto-login first
       await autoLogin();
       
-      // Fetch user passes
-      fetchUserPasses();
+      // Get passes from localStorage as fallback
+      const storedPasses = getUserPassesFromStorage();
+      setUserPasses(storedPasses);
     };
 
     initializeUser();
@@ -94,31 +98,19 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
           if (!result.success) {
             if (result.error === 'User not found') {
               // No user found in database - this might be a new user
-              console.log('No dojo user found in database for email:', user.email);
-              console.log('This user will be created when they first interact with the app');
-              
               // Don't try to create user automatically - let the auth system handle it
-              console.log('Waiting for user creation via auth system...');
               return;
             } else {
-              // Log detailed error information for debugging
-              console.error('Error fetching dojo user from database:', {
-                error: result.error,
-                details: result.details
-              });
-              
               // Continue with local data if database is unavailable
-              console.log('Continuing with local user data due to database error');
             }
             return;
           }
 
           if (result.data) {
             setDojoUser(result.data);
-            console.log('Dojo user data loaded from database:', result.data);
           }
         } catch (error) {
-          console.error('Error in fetchDojoUser:', error);
+          // Handle error silently
         }
       }
     };
@@ -126,12 +118,19 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
     fetchDojoUser();
   }, [user?.email]);
 
-  // Re-fetch user passes when dropdown opens
+  // Listen for custom events to refresh passes (e.g., after purchase)
   useEffect(() => {
-    if (isDropdownOpen) {
-      fetchUserPasses();
-    }
-  }, [isDropdownOpen]);
+    const handlePassPurchase = () => {
+      const storedPasses = getUserPassesFromStorage();
+      setUserPasses(storedPasses);
+    };
+
+    window.addEventListener('pass-purchased', handlePassPurchase);
+    
+    return () => {
+      window.removeEventListener('pass-purchased', handlePassPurchase);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -149,9 +148,9 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
         setCopied(true);
         // Remove setTimeout to prevent timeout errors
         // The copied state will be reset when user interacts with the component
-          } catch (error) {
-      // Handle error silently
-    }
+      } catch (error) {
+        // Handle error silently
+      }
     }
   };
 
@@ -163,7 +162,7 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
   const menuItems = [
     {
       icon: <Shield className="w-3 h-3" />,
-      label: 'My Pass',
+      label: `My Passes (${userPasses.length})`,
       action: () => router.push('/pass'),
       color: 'text-primary'
     },
@@ -180,8 +179,6 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
       color: 'text-red-600 dark:text-red-400'
     }
   ];
-
-
 
   // Get user display info
   const getUserDisplayInfo = () => {
@@ -246,6 +243,12 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
                   <Copy className="w-2.5 h-2.5" />
                 )}
               </button>
+            </div>
+            {/* Passes Count */}
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
+              <p className="text-xs text-muted-foreground">
+                Passes: {userPasses.length}
+              </p>
             </div>
           </div>
 

@@ -146,7 +146,7 @@ export default function PrivacyPage() {
                 <strong>Email:</strong> dojopasss@gmail.com
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Website:</strong> https://dojopass.store
+                <strong>Website:</strong> /
               </p>
             </div>
           </section>

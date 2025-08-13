@@ -3,6 +3,7 @@
 import React from 'react';
 import { QrCode, CheckCircle, Shield } from 'lucide-react';
 import Image from 'next/image';
+import { STORAGE_CONFIG } from '@/lib/storage-config';
 
 interface UPIPaymentSectionProps {
   showQR: boolean;
@@ -61,7 +62,7 @@ export default function UPIPaymentSection({
             </h4>
             <div className="w-40 h-40 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center mb-3 p-3 border border-gray-300 dark:border-gray-600">
               <Image
-                src={process.env.NEXT_PUBLIC_STORAGE_QR_CODE_URL || '/images/qrcode-placeholder.jpeg'}
+                src="https://mbzxsvhuswrowjlujhco.supabase.co/storage/v1/object/sign/payment/qr.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82Nzg3MzVkNC1jMzBkLTQ1MmUtOWE5YS1kZThlODQwYzc1M2MiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwYXltZW50L3FyLmpwZWciLCJpYXQiOjE3NTUxMTQ2OTQsImV4cCI6MTc4NjY1MDY5NH0.jbf0FWnYh_fkM8KyG9OmUPqt-sdU1LmkaCOZb33PJxc"
                 alt="PayDojo QR Code"
                 width={128}
                 height={128}

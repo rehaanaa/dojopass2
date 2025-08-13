@@ -1,13 +1,14 @@
 {
   "name": "DojoPass",
   "version": "1.0.0",
-  "description": "India’s Fastest Digital Pass Store",
+  "description": "India's Fastest Digital Pass Store",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup": "node scripts/setup-env.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",

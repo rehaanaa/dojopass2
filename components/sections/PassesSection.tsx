@@ -112,13 +112,13 @@ export default function PassesSection({ passes }: PassesSectionProps) {
               <Card key={pass.id} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden h-full flex flex-col text-gray-900 dark:text-white">
                 {/* Header with Image */}
                 <CardHeader className="p-3 pb-1">
-                  <div className="relative w-full h-32 rounded-lg overflow-hidden mb-2">
+                  <div className="relative w-full h-40 rounded-lg overflow-hidden mb-2">
                     {pass.image_url ? (
                       <Image
                         src={pass.image_url}
-                        alt={pass.name}
+                        alt={pass.title}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         sizes="100%"
                         unoptimized={!pass.image_url.startsWith('/')}
                         onError={(e) => {
@@ -152,7 +152,7 @@ export default function PassesSection({ passes }: PassesSectionProps) {
                   
                   {/* Title */}
                   <h3 className="text-sm font-bold text-card-foreground mb-1">
-                    {pass.name || 'Untitled Pass'}
+                    {pass.title || 'Untitled Pass'}
                   </h3>
                   
                   {/* Description */}

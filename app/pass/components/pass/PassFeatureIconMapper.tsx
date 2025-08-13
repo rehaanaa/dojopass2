@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Clock, Monitor, Tag, Star, Gamepad2, Zap, CheckCircle2, Bot, Crown, Music, Download, Headphones, Video, Tv, HardDrive, Theater, Sparkles, Languages, Target, CheckSquare, Shield, Users, Cloud, Gift, Smartphone, RotateCcw, Heart, TrendingUp, ArrowRight, Lock, CheckCircle, Globe, Package, Palette, Search, Brain, Infinity as InfinityIcon } from 'lucide-react';
+import { Clock, Monitor, Tag, Star, Gamepad2, Zap, CheckCircle2, Bot, Crown, Music, Download, Headphones, Video, Tv, HardDrive, Theater, Sparkles, Languages, Target, CheckSquare, Shield, Users, Cloud, Gift, Smartphone, RotateCcw, Heart, TrendingUp, ArrowRight, Lock, CheckCircle, Globe, Package, Palette, Search, Brain, Infinity as InfinityIcon, Trophy } from 'lucide-react';
 
 export default function PassFeatureIconMapper() {
   // Helper function to get icon component based on feature name
@@ -85,7 +85,23 @@ export default function PassFeatureIconMapper() {
       'Trending Content': <TrendingUp className="w-3 h-3" />,
       'Premium Content': <Star className="w-3 h-3" />,
       'Sync Library': <Cloud className="w-3 h-3" />,
-      'Custom Playlists': <Music className="w-3 h-3" />
+      'Custom Playlists': <Music className="w-3 h-3" />,
+      
+      // Database-specific features
+      '4K Ultra HD': <Video className="w-3 h-3" />,
+      '4 Screens': <Tv className="w-3 h-3" />,
+      'Original Content': <Theater className="w-3 h-3" />,
+      'HD Quality': <Video className="w-3 h-3" />,
+      '2 Screens': <Tv className="w-3 h-3" />,
+      'High-quality Audio': <Headphones className="w-3 h-3" />,
+      'Offline Downloads': <Download className="w-3 h-3" />,
+      'Ad-Free': <CheckCircle className="w-3 h-3" />,
+      'Family Friendly': <Users className="w-3 h-3" />,
+      '4K HDR': <Video className="w-3 h-3" />,
+      'Multiple Profiles': <Users className="w-3 h-3" />,
+      'Premium Games': <Gamepad2 className="w-3 h-3" />,
+      'Achievements': <Trophy className="w-3 h-3" />,
+      'Multiplayer': <Users className="w-3 h-3" />
     };
     return iconMap[featureName] || <Star className="w-3 h-3" />;
   };

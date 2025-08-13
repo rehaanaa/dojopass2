@@ -12,7 +12,10 @@ interface PlatformFeaturesProps {
 export default function PlatformFeatures({ features }: PlatformFeaturesProps) {
   const { getFeatureIcon } = FeatureIconMapper();
 
-  // Use different colors for different feature types
+  // Debug: Log the features being passed
+  console.log('🔍 PlatformFeatures - received features:', features);
+
+  // Use different colors for different feature types (for icons)
   const getFeatureColor = (text: string) => {
     const lowerText = text.toLowerCase();
     if (lowerText.includes('gaming') || lowerText.includes('game') || lowerText.includes('playstation') || lowerText.includes('steam') || lowerText.includes('xbox')) {
@@ -60,7 +63,7 @@ export default function PlatformFeatures({ features }: PlatformFeaturesProps) {
               return (
                 <li key={index} className="flex items-center text-gray-600 dark:text-gray-400">
                   <span className="mr-1 flex-shrink-0 text-indigo-600 dark:text-indigo-400">
-                    <CheckCircle2 className="w-3 h-3" />
+                    <CheckCircle2 className="w-4 h-4" />
                   </span>
                   <span>Feature {index + 1}</span>
                 </li>

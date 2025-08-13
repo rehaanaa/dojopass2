@@ -28,36 +28,41 @@ export default function DataParser() {
 
   // Parse offers if they come as JSON string
   const parseOffers = (offers: any) => {
+    console.log('🔍 Platform DataParser - parsing offers:', offers, 'Type:', typeof offers);
+    
     if (typeof offers === 'string') {
       try {
-        return JSON.parse(offers);
+        const parsed = JSON.parse(offers);
+        console.log('🔍 Platform DataParser - parsed offers from string:', parsed);
+        return parsed;
       } catch (e) {
+        console.warn('Platform DataParser - Failed to parse offers JSON:', e);
         return offers;
       }
     }
+    
+    console.log('🔍 Platform DataParser - offers is already parsed:', offers);
     return offers;
   };
 
-  // Format offers for display
+  // Format offers for display with proper icon mapping
   const formatOffers = (offers: any) => {
-    if (!offers) return null;
-    
     const parsed = parseOffers(offers);
+    console.log('🔍 Platform DataParser - formatting offers, parsed:', parsed);
     
     if (Array.isArray(parsed)) {
-      return parsed.map((offer: any, index: number) => {
-        if (offer && typeof offer === 'object') {
-          return offer.title || offer.name || offer.discount || JSON.stringify(offer);
-        }
-        return String(offer);
-      }).join(', ');
+      const filtered = parsed.filter(offer => offer && typeof offer === 'object' && offer.text);
+      console.log('🔍 Platform DataParser - filtered offers:', filtered);
+      return filtered;
     }
     
     if (typeof parsed === 'object') {
-      return Object.entries(parsed).map(([key, value]) => `${key}: ${value}`).join(', ');
+      console.log('🔍 Platform DataParser - single offer object:', parsed);
+      return [parsed];
     }
     
-    return String(parsed);
+    console.log('🔍 Platform DataParser - no offers to format');
+    return [];
   };
 
   return { parseFeatures, parseOffers, formatOffers };

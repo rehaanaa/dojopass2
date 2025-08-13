@@ -70,7 +70,7 @@ const CheckoutDetails: React.FC<CheckoutDetailsProps> = ({
               <Receipt className="w-5 h-5 text-green-600 dark:text-green-400" />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">{selectedPass.name || selectedPass.title}</h4>
+                              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">{selectedPass.title}</h4>
               <p className="text-xs text-gray-600 dark:text-gray-400">Digital Pass</p>
             </div>
           </div>
@@ -103,40 +103,60 @@ const CheckoutDetails: React.FC<CheckoutDetailsProps> = ({
       </div>
 
       {/* Features Included */}
-      {selectedPass.features && Array.isArray(selectedPass.features) && selectedPass.features.length > 0 && (
-        <div className="mb-4">
-          <h4 className="text-xs font-medium text-gray-900 dark:text-gray-100 mb-2">Features Included</h4>
-          <ul className="space-y-1">
-            {selectedPass.features.slice(0, 5).map((feature: any, index: number) => {
-              // Use different colors for feature dots
-              const colors = [
-                'bg-blue-500',
-                'bg-purple-500', 
-                'bg-pink-500',
-                'bg-orange-500',
-                'bg-teal-500'
-              ];
-              const colorClass = colors[index % colors.length];
-              
-              return (
-                <li key={index} className="flex items-center space-x-2">
-                  <div className={`w-2 h-2 ${colorClass} rounded-full`}></div>
-                  <span className="text-xs text-gray-600 dark:text-gray-400">
-                    {typeof feature === 'string' ? feature : 
-                     typeof feature === 'object' && feature && 'text' in feature ? 
-                     (feature as any).text : 'Feature'}
-                  </span>
-                </li>
-              );
-            })}
-            {selectedPass.features.length > 5 && (
-              <li className="text-xs text-gray-600 dark:text-gray-400">
-                +{selectedPass.features.length - 5} more features
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
+      <div className="mb-4">
+        <h4 className="text-xs font-medium text-gray-900 dark:text-gray-100 mb-2">Features Included</h4>
+        <ul className="space-y-2">
+          {/* 1. Refund Policy */}
+          <li className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">10 Days refund policy</span>
+          </li>
+
+          {/* 2. Secure Payment */}
+          <li className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Secure payment</span>
+          </li>
+
+          {/* 3. Trusted Platform */}
+          <li className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Trusted platform</span>
+          </li>
+
+          {/* 4. Fast Shipping */}
+          <li className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Fast shipping</span>
+          </li>
+
+          {/* 5. Free Return */}
+          <li className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-teal-100 dark:bg-teal-900/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-teal-600 dark:text-teal-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd"/>
+              </svg>
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Free return</span>
+          </li>
+        </ul>
+      </div>
 
       {/* Multiple Purchase Info */}
       <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">

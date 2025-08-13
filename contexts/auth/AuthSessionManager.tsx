@@ -3,6 +3,7 @@
 import React from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { createOrUpdateUser } from '@/lib/api';
 
 export default function AuthSessionManager() {
   // Get initial session
@@ -22,22 +23,39 @@ export default function AuthSessionManager() {
         setSession(session);
         setUser(session.user);
         
-        // For now, just set a basic user object
-        // You can expand this later to fetch from your database
-        const basicUser = {
-          id: session.user.id,
-          email: session.user.email,
-          dojo_id: `DOJOPS${Math.floor(Math.random() * 100000)}`,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-        setDojoUser(basicUser);
-        console.log('User session restored:', basicUser);
-        
-        // Redirect to pass page after successful login
-        if (window.location.pathname === '/') {
-          window.location.href = '/pass';
+        try {
+          // Create or update user in the database
+          if (!session.user.email) {
+            throw new Error('User email is undefined');
+          }
+          const result = await createOrUpdateUser(session.user.email);
+          
+          if (result.success && result.data) {
+            setDojoUser(result.data);
+          } else {
+            console.error('Failed to create/update user in database:', result.error);
+            // Fallback to basic user object
+            const basicUser = {
+              id: session.user.id,
+              email: session.user.email,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            };
+            setDojoUser(basicUser);
+          }
+        } catch (error) {
+          console.error('Error creating/updating user in database:', error);
+          // Fallback to basic user object
+          const basicUser = {
+            id: session.user.id,
+            email: session.user.email,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          setDojoUser(basicUser);
         }
+        
+
       }
     } catch (error) {
       console.error('Error in getInitialSession:', error);
@@ -46,43 +64,53 @@ export default function AuthSessionManager() {
     }
   };
 
-  // Handle auth state changes
-  const handleAuthStateChange = (
+  // Handle auth state changes - optimized to prevent excessive API calls
+  const handleAuthStateChange = async (
     event: string,
     session: Session | null,
     setSession: (session: Session | null) => void,
     setUser: (user: User | null) => void,
     setDojoUser: (user: any) => void
   ) => {
-    console.log('Auth state changed:', event, session);
-    
     if (event === 'SIGNED_IN' && session) {
       setSession(session);
       setUser(session.user);
       
-      // Create basic user object
-      const basicUser = {
-        id: session.user.id,
-        email: session.user.email,
-        dojo_id: `DOJOPS${Math.floor(Math.random() * 100000)}`,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-      setDojoUser(basicUser);
-      console.log('User signed in:', basicUser);
+      // Only create/update user if we don't already have one
+      if (!session.user.email) {
+        console.error('User email is undefined');
+        return;
+      }
       
-      // Redirect to pass page after successful login
-      if (window.location.pathname === '/') {
-        window.location.href = '/pass';
+      try {
+        const result = await createOrUpdateUser(session.user.email);
+        if (result.success && result.data) {
+          setDojoUser(result.data);
+        } else {
+          // Fallback to basic user object
+          const basicUser = {
+            id: session.user.id,
+            email: session.user.email,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          setDojoUser(basicUser);
+        }
+      } catch (error) {
+        console.error('Error creating/updating user in database:', error);
+        // Fallback to basic user object
+        const basicUser = {
+          id: session.user.id,
+          email: session.user.email,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        setDojoUser(basicUser);
       }
     } else if (event === 'SIGNED_OUT') {
       setSession(null);
       setUser(null);
       setDojoUser(null);
-      
-      // Redirect to landing page after logout
-      console.log('User signed out, redirecting to landing page');
-      window.location.href = '/';
     }
   };
 

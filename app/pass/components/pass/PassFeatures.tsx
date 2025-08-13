@@ -12,23 +12,60 @@ interface PassFeaturesProps {
 export default function PassFeatures({ features }: PassFeaturesProps) {
   const { getFeatureIcon } = PassFeatureIconMapper();
 
-  // Use different colors for different feature types
+  // Debug: Log the features being passed
+  console.log('🔍 PassFeatures - received features:', features);
+
+  // Use different vibrant colors for different feature types
   const getFeatureColor = (text: string) => {
     const lowerText = text.toLowerCase();
-    if (lowerText.includes('gaming') || lowerText.includes('game') || lowerText.includes('playstation') || lowerText.includes('steam') || lowerText.includes('xbox')) {
+    
+    // Gaming & Entertainment
+    if (lowerText.includes('gaming') || lowerText.includes('game') || lowerText.includes('playstation') || lowerText.includes('steam') || lowerText.includes('xbox') || lowerText.includes('nintendo')) {
       return 'text-blue-600 dark:text-blue-400';
-    } else if (lowerText.includes('ai') || lowerText.includes('chatgpt') || lowerText.includes('claude') || lowerText.includes('gpt')) {
+    } 
+    // AI & Technology
+    else if (lowerText.includes('ai') || lowerText.includes('chatgpt') || lowerText.includes('claude') || lowerText.includes('gpt') || lowerText.includes('gemini') || lowerText.includes('midjourney')) {
       return 'text-purple-600 dark:text-purple-400';
-    } else if (lowerText.includes('design') || lowerText.includes('figma') || lowerText.includes('canva') || lowerText.includes('adobe')) {
+    } 
+    // Design & Creative
+    else if (lowerText.includes('design') || lowerText.includes('figma') || lowerText.includes('canva') || lowerText.includes('adobe') || lowerText.includes('sketch') || lowerText.includes('creative')) {
       return 'text-pink-600 dark:text-pink-400';
-    } else if (lowerText.includes('streaming') || lowerText.includes('netflix') || lowerText.includes('spotify') || lowerText.includes('music')) {
+    } 
+    // Streaming & Media
+    else if (lowerText.includes('streaming') || lowerText.includes('netflix') || lowerText.includes('spotify') || lowerText.includes('music') || lowerText.includes('video') || lowerText.includes('4k')) {
       return 'text-red-600 dark:text-red-400';
-    } else if (lowerText.includes('gift') || lowerText.includes('card') || lowerText.includes('amazon') || lowerText.includes('flipkart')) {
+    } 
+    // Gift & Shopping
+    else if (lowerText.includes('gift') || lowerText.includes('card') || lowerText.includes('amazon') || lowerText.includes('flipkart') || lowerText.includes('shopping')) {
       return 'text-orange-600 dark:text-orange-400';
-    } else if (lowerText.includes('instant') || lowerText.includes('fast') || lowerText.includes('quick')) {
-      return 'text-green-600 dark:text-green-400';
-    } else {
+    } 
+    // Speed & Performance
+    else if (lowerText.includes('instant') || lowerText.includes('fast') || lowerText.includes('quick') || lowerText.includes('zap') || lowerText.includes('speed')) {
+      return 'text-emerald-600 dark:text-emerald-400';
+    } 
+    // Quality & Premium
+    else if (lowerText.includes('premium') || lowerText.includes('pro') || lowerText.includes('quality') || lowerText.includes('hd') || lowerText.includes('ultra')) {
+      return 'text-amber-600 dark:text-amber-400';
+    } 
+    // Security & Support
+    else if (lowerText.includes('secure') || lowerText.includes('support') || lowerText.includes('24/7') || lowerText.includes('priority') || lowerText.includes('shield')) {
+      return 'text-teal-600 dark:text-teal-400';
+    } 
+    // Collaboration & Social
+    else if (lowerText.includes('team') || lowerText.includes('collaboration') || lowerText.includes('family') || lowerText.includes('sharing') || lowerText.includes('users')) {
       return 'text-indigo-600 dark:text-indigo-400';
+    } 
+    // Cloud & Storage
+    else if (lowerText.includes('cloud') || lowerText.includes('storage') || lowerText.includes('sync') || lowerText.includes('backup')) {
+      return 'text-cyan-600 dark:text-cyan-400';
+    } 
+    // Mobile & Apps
+    else if (lowerText.includes('mobile') || lowerText.includes('app') || lowerText.includes('smartphone') || lowerText.includes('ios') || lowerText.includes('android')) {
+      return 'text-lime-600 dark:text-lime-400';
+    } 
+    // Default color
+    else {
+      return 'text-gray-600 dark:text-gray-400';
     }
   };
 

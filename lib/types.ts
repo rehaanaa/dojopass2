@@ -1,50 +1,55 @@
-export interface Pass {
-  id: number;
-  platform_id: number;
-  name: string;
-  description: string;
-  price: number;
-  duration_days: number;
-  image_url: string | null;
-  features: any[];
-  offers: any | null;
-  completed?: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface Platform {
   id: number;
   title: string;
-  name: string;
+  subtitle?: string;
+  icon: string;
   description: string;
-  image_url: string | null;
-  features: any[];
-  created_at: string;
-  updated_at: string;
+  features: Feature[];
+  offers?: Offer[];
+  image?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Pass {
+  id: number;
+  platform_id: number;
+  title: string;
+  subtitle?: string;
+  description: string;
+  price: number;
+  original_price?: number;
+  currency: string;
+  duration_days?: number;
+  features: Feature[];
+  offers?: Offer[];
+  image?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Feature {
-  id?: number;
-  name?: string;
-  text?: string;
-  title?: string;
-  description?: string;
-  icon?: string;
+  icon: string;
+  text: string;
 }
 
-export interface UserPass {
-  id: number;
-  platform_id: number;
-  name: string;
-  description: string;
-  price: number;
-  payment_amount?: number;
-  duration_days: number;
-  image_url: string | null;
-  features: Feature[];
-  offers: any | null;
-  completed?: boolean;
-  created_at: string;
-  updated_at: string;
+export interface Offer {
+  icon: string;
+  text: string;
+  type?: 'discount' | 'bonus' | 'limited';
+}
+
+export interface DojoUser {
+  id?: string;
+  email: string;
+  created_at?: string;
+  updated_at?: string;
+  // Add other user fields as needed
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  action?: 'created' | 'updated' | 'fetched';
 }

@@ -10,7 +10,7 @@ export default function MainDataLoader() {
         id: 1,
         title: 'Gaming Pass',
         description: 'Top up your game with codes & passes Steam, Xbox, PSN, and Nitro codes – delivered instantly.',
-        image_url: '/landing/gaming pass.png',
+        image_url: '/landing/Game-Pass-Xbox.jpg',
         subtitle: 'Gaming',
         features: [
           { name: 'PlayStation, Steam, Xbox', icon: <Gamepad2 className="w-4 h-4" /> },
@@ -22,7 +22,7 @@ export default function MainDataLoader() {
         id: 2,
         title: 'AI Pass',
         description: 'ChatGPT, Claude, Gemini & more Unlock premium access to the smartest AI tools in the world.',
-        image_url: '/landing/ai pass.png',
+        image_url: '/landing/ChatGPT-5-Plus.png',
         subtitle: 'AI Tools',
         features: [
           { name: 'ChatGPT Pro, Claude 3', icon: <Bot className="w-4 h-4" /> },
@@ -34,7 +34,7 @@ export default function MainDataLoader() {
         id: 3,
         title: 'Design Pass',
         description: 'Canva, Figma, Adobe & more Pro design tools for freelancers, editors, and agencies.',
-        image_url: '/landing/design pass.png',
+        image_url: '/landing/Canva-Free.png',
         subtitle: 'Design',
         features: [
           { name: 'Pro Creative Tools', icon: <CheckCircle2 className="w-4 h-4" /> },
@@ -46,7 +46,7 @@ export default function MainDataLoader() {
         id: 4,
         title: 'Gift Pass',
         description: 'Cards & credits for anything digital Digital gift cards and top-up credits for your favorite stores, platforms, and games.',
-        image_url: '/landing/gift pass.png',
+        image_url: '/landing/gift-pass.png',
         subtitle: 'Gift Cards',
         features: [
           { name: 'Instant code delivery', icon: <Zap className="w-4 h-4" /> },
@@ -58,7 +58,7 @@ export default function MainDataLoader() {
         id: 5,
         title: 'Streaming Pass',
         description: 'Netflix, Spotify, YouTube Premium & more Premium streaming services for unlimited entertainment.',
-        image_url: '/landing/streaming pass.png',
+        image_url: '/landing/streaming-pass.png',
         subtitle: 'Streaming',
         features: [
           { name: 'Ad-Free Music', icon: <Music className="w-4 h-4" /> },
@@ -74,12 +74,12 @@ export default function MainDataLoader() {
     const staticPasses = [
       {
         id: 1,
-        name: 'ChatGPT Plus',
+        title: 'ChatGPT 5 Plus',
         description: 'Access to GPT-4, advanced features, and priority support',
         price: 1999,
         duration_days: 30,
         platform_id: 2,
-        image_url: '/landing/ai pass.png',
+        image_url: '/landing/ChatGPT-5-Plus.png',
         features: [
           { name: 'GPT-4 Access', icon: <Bot className="w-4 h-4" /> },
           { name: 'Priority Support', icon: <Star className="w-4 h-4" /> },
@@ -89,7 +89,7 @@ export default function MainDataLoader() {
       },
       {
         id: 2,
-        name: 'Spotify Premium',
+        title: 'Spotify Premium',
         description: 'Ad-free music, offline downloads, and high-quality audio',
         price: 999,
         duration_days: 30,
@@ -104,7 +104,7 @@ export default function MainDataLoader() {
       },
       {
         id: 3,
-        name: 'Netflix Premium',
+        title: 'Netflix Premium',
         description: '4K Ultra HD streaming with multiple screens',
         price: 1499,
         duration_days: 30,
@@ -119,12 +119,12 @@ export default function MainDataLoader() {
       },
       {
         id: 4,
-        name: 'Figma Pro',
+        title: 'Canva Pro',
         description: 'Professional design tools for teams and collaboration',
         price: 799,
         duration_days: 30,
         platform_id: 3,
-        image_url: '/landing/design pass.png',
+        image_url: '/landing/Canva-Free.png',
         features: [
           { name: 'Pro Creative Tools', icon: <CheckCircle2 className="w-4 h-4" /> },
           { name: 'Team Invites', icon: <Star className="w-4 h-4" /> },
@@ -134,12 +134,12 @@ export default function MainDataLoader() {
       },
       {
         id: 5,
-        name: 'Steam Gift Card',
-        description: 'Digital gift card for Steam games and software',
+        title: 'Xbox Game Pass',
+        description: 'Access to hundreds of high-quality games for Xbox and PC',
         price: 500,
         duration_days: 365,
         platform_id: 1,
-        image_url: '/landing/gaming pass.png',
+        image_url: '/landing/Game-Pass-Xbox.jpg',
         features: [
           { name: 'PlayStation, Steam, Xbox', icon: <Gamepad2 className="w-4 h-4" /> },
           { name: 'Instant Code', icon: <Zap className="w-4 h-4" /> },

@@ -1,30 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Get environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dojopass.store';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Create Supabase client with fallback
-let supabase: any;
+// Create client-side Supabase client (for components that need it)
+export const supabase = createClient(
+  supabaseUrl, 
+  supabaseAnonKey || 'placeholder-key'
+);
 
-if (supabaseUrl && supabaseAnonKey) {
-  // Create real Supabase client when environment variables are available
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-} else {
-  // Create fallback client when environment variables are missing
-  supabase = {
-    auth: {
-      getSession: async () => ({ data: { session: null }, error: null }),
-      signInWithOAuth: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
-      signOut: async () => ({ error: null }),
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
-    },
-    from: () => ({
-      select: () => ({
-        limit: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } })
-      })
-    })
-  };
-}
-
-export { supabase };
+// Server-side Supabase client with service role key (for API routes only)
+export const createServerSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dojopass.store';
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!supabaseUrl || !supabaseServiceKey) {
+    console.warn('Missing Supabase service role key. This function should only be called from API routes.');
+    return null;
+  }
+  
+  return createClient(supabaseUrl, supabaseServiceKey);
+};

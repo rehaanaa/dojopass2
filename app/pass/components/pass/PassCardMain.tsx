@@ -21,6 +21,14 @@ export default function PassCardMain({ pass, onClick }: PassCardMainProps) {
   const features = parseFeatures(pass.features);
   const offers = parseOffers(pass.offers);
   const formattedOffers = formatOffers(pass.offers);
+  
+  console.log('🔍 PassCardMain - pass data:', {
+    features: pass.features,
+    offers: pass.offers,
+    parsedFeatures: features,
+    parsedOffers: offers,
+    formattedOffers: formattedOffers
+  });
 
   return (
     <div

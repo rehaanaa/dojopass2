@@ -1,37 +1,19 @@
-// API utility functions to replace direct Supabase calls
+export interface DojoUser {
+  id?: string;
+  email: string;
+  created_at?: string;
+  updated_at?: string;
+  // Add other user fields as needed
+}
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
-  details?: any;
-  action?: string;
+  action?: 'created' | 'updated' | 'fetched';
 }
 
-export interface DojoUser {
-  id: string;
-  email: string;
-  dojo_id: string;
-  created_at: string;
-  updated_at: string;
-}
-
-// Get user by email (fetch existing users)
-export async function getUserByEmail(email: string): Promise<ApiResponse<DojoUser>> {
-  try {
-    const response = await fetch(`/api/users?email=${encodeURIComponent(email)}`);
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    return {
-      success: false,
-      error: 'Network error',
-      details: error
-    };
-  }
-}
-
-// Create or update user (for new users and existing users)
+// Create or update a user using the API route
 export async function createOrUpdateUser(email: string): Promise<ApiResponse<DojoUser>> {
   try {
     const response = await fetch('/api/users', {
@@ -41,13 +23,44 @@ export async function createOrUpdateUser(email: string): Promise<ApiResponse<Doj
       },
       body: JSON.stringify({ email }),
     });
+
     const result = await response.json();
-    return result;
+    
+    if (result.success) {
+      return { 
+        success: true, 
+        data: result.data, 
+        action: result.action 
+      };
+    } else {
+      return { success: false, error: result.error || 'Failed to create/update user' };
+    }
   } catch (error) {
-    return {
-      success: false,
-      error: 'Network error',
-      details: error
-    };
+    console.error('Unexpected error in createOrUpdateUser:', error);
+    return { success: false, error: 'Network error occurred' };
+  }
+}
+
+// Get user by email using the API route
+export async function getUserByEmail(email: string): Promise<ApiResponse<DojoUser>> {
+  try {
+    const response = await fetch(`/api/users?email=${encodeURIComponent(email)}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      return { 
+        success: true, 
+        data: result.data, 
+        action: 'fetched' 
+      };
+    } else {
+      if (result.error === 'User not found') {
+        return { success: true, data: undefined };
+      }
+      return { success: false, error: result.error || 'Failed to fetch user' };
+    }
+  } catch (error) {
+    console.error('Unexpected error in getUserByEmail:', error);
+    return { success: false, error: 'Network error occurred' };
   }
 }

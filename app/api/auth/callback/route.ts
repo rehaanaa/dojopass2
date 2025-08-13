@@ -12,12 +12,12 @@ export async function GET(request: NextRequest) {
     
     if (error) {
       console.error('Google OAuth error:', error);
-      return NextResponse.redirect(new URL('https://dojopass.store?error=auth_failed', request.url));
+      return NextResponse.redirect(new URL('/?error=auth_failed', request.url));
     }
     
     if (!code) {
       console.error('No authorization code received');
-      return NextResponse.redirect(new URL('https://dojopass.store?error=no_code', request.url));
+      return NextResponse.redirect(new URL('/?error=no_code', request.url));
     }
 
     // Create Supabase client with service role key
@@ -28,20 +28,20 @@ export async function GET(request: NextRequest) {
     
     if (sessionError) {
       console.error('Session creation error:', sessionError);
-      return NextResponse.redirect(new URL('https://dojopass.store?error=session_error', request.url));
+      return NextResponse.redirect(new URL('/?error=session_error', request.url));
     }
 
     if (data.session && data.user) {
       // Successfully authenticated, redirect to pass page
       console.log('User authenticated:', data.user.email);
-      return NextResponse.redirect(new URL('https://dojopass.store/pass', request.url));
+      return NextResponse.redirect(new URL('/pass', request.url));
     } else {
       // No session created
       console.log('No session created');
-      return NextResponse.redirect(new URL('https://dojopass.store', request.url));
+      return NextResponse.redirect(new URL('/', request.url));
     }
   } catch (error) {
     console.error('Unexpected error in auth callback:', error);
-    return NextResponse.redirect(new URL('https://dojopass.store?error=unexpected', request.url));
+    return NextResponse.redirect(new URL('/?error=unexpected', request.url));
   }
 }

@@ -37,17 +37,26 @@ export default function PassPaymentProcessor() {
           
           if (userEmail && dojoUser?.id) {
             try {
+              // Debug: Log user information
+              console.log('🔍 Debug - User information:', {
+                supabaseUserId: user?.id,
+                dojoUserId: dojoUser?.id,
+                dojoUserEmail: dojoUser?.email,
+                dojoUserFull: dojoUser
+              });
+              
               // Save to database via API using new user_purchased table
               const requestBody = {
                 user_id: dojoUser.id,
                 pass_id: selectedPass.id,
                 platform_id: selectedPlatform.id,
-                pass_name: selectedPass.name,
+                pass_name: selectedPass.title,
                 price: selectedPass.price,
-                duration_days: selectedPass.duration_days
+                duration_days: selectedPass.duration_days,
+                transaction_id: transactionId
               };
               
-              console.log('API request body:', requestBody);
+              console.log('🔍 API request body:', requestBody);
               
               const response = await fetch('/api/user-purchased', {
                 method: 'POST',
@@ -65,13 +74,13 @@ export default function PassPaymentProcessor() {
                 // Also update localStorage for backward compatibility
                 const purchasedPass = {
                   id: result.data.id.toString(),
-                  name: selectedPass.name,
+                  name: selectedPass.title,
                   pass_id: selectedPass.id.toString(),
                   platform: {
                     name: selectedPlatform.title || selectedPlatform.name
                   },
                   pass: {
-                    name: selectedPass.name
+                    name: selectedPass.title
                   },
                   payment_amount: selectedPass.price,
                   purchase_date: result.data.purchase_date,
@@ -167,6 +176,13 @@ export default function PassPaymentProcessor() {
             }
           } else {
             // No user email, save to localStorage only
+            console.log('❌ No user email or dojo user ID found, saving to localStorage only');
+            console.log('❌ Debug - Available user data:', {
+              userEmail: userEmail,
+              dojoUserId: dojoUser?.id,
+              dojoUser: dojoUser,
+              user: user
+            });
             const purchasedPass = {
               ...selectedPass,
               purchased_at: new Date().toISOString(),

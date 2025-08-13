@@ -15,12 +15,12 @@ export default function PlatformHeader({ platform }: PlatformHeaderProps) {
       {/* Header with Image */}
       <div className="mb-2">
         {platform.image_url ? (
-          <div className="relative w-full h-28 rounded-lg overflow-hidden">
+          <div className="relative w-full h-40 rounded-lg overflow-hidden">
             <Image
               src={platform.image_url}
               alt={platform.title || 'Platform'}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="100%"
               unoptimized={!platform.image_url.startsWith('/')}
               onError={(e) => {

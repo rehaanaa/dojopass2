@@ -21,6 +21,11 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = ({
       origin: { y: 0.6 }, 
       colors: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'] 
     });
+
+    // Dispatch custom event to refresh user passes
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('pass-purchased'));
+    }
   }, []);
 
   return (

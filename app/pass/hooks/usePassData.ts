@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Platform, Pass } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
-import { getPlatforms, getPassesByPlatform } from '@/lib/database';
 
 export const usePassData = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -9,7 +8,7 @@ export const usePassData = () => {
   const [selectedPass, setSelectedPass] = useState<Pass | null>(null);
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [passes, setPasses] = useState<Pass[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [passesLoading, setPassesLoading] = useState(false);
   const [userPasses, setUserPasses] = useState<Pass[]>([]);
   const [userPassesLoading, setUserPassesLoading] = useState(false);
@@ -76,8 +75,7 @@ export const usePassData = () => {
 
   const fetchPlatforms = async () => {
     try {
-      setLoading(true);
-      const response = await fetch('/api/pass/platform');
+      const response = await fetch('/api/platforms');
       const data = await response.json();
 
       if (response.ok) {
@@ -91,44 +89,28 @@ export const usePassData = () => {
           setPlatforms(platformsData);
         }
         
-        console.log('Platforms loaded:', platformsData);
-        // Debug: Check for any object values
-        const finalPlatforms = platformsData;
-        finalPlatforms.forEach((platform: any, index: number) => {
-          console.log(`Platform ${index}:`, {
-            title: typeof platform.title,
-            subtitle: typeof platform.subtitle,
-            icon: typeof platform.icon,
-            badge_label: typeof platform.badge_label,
-            description: typeof platform.description,
-            features: typeof platform.features
-          });
-        });
+        // Set platforms data
+        setPlatforms(platformsData);
       } else {
         console.error('Failed to fetch platforms:', data.error, data.details);
         // No fallback data - rely on database only
-        console.log('No fallback data available');
         setPlatforms([]);
       }
     } catch (error) {
       console.error('Failed to fetch platforms:', error);
       // No fallback data - rely on database only
-      console.log('No fallback data available due to error');
       setPlatforms([]);
-    } finally {
-      setLoading(false);
     }
   };
 
   const fetchPasses = async (platformId: number) => {
     try {
       setPassesLoading(true);
-      const response = await fetch(`/api/pass/pass?platform_id=${platformId}`);
+      const response = await fetch(`/api/passes?platform_id=${platformId}`);
       const data = await response.json();
 
       if (response.ok) {
         setPasses(data.passes || []);
-        console.log('Passes loaded:', data.passes);
       } else {
         console.error('Failed to fetch passes:', data.error, data.details);
         setPasses([]);
@@ -156,25 +138,19 @@ export const usePassData = () => {
     setCurrentStep(step);
   };
 
-  // Auto-login and fetch data on component mount
+  // Fetch data on component mount - only once
   useEffect(() => {
     const initializeData = async () => {
-      // Try to auto-login first
-      await autoLogin();
-      
       // Fetch platforms
       await fetchPlatforms();
-      
-      // Fetch user passes if we have stored email
-      await fetchUserPasses();
     };
 
     initializeData();
   }, []);
 
-  // Re-fetch user passes when user changes
+  // Fetch user passes only when user changes and we don't have them already
   useEffect(() => {
-    if (user) {
+    if (user && userPasses.length === 0) {
       fetchUserPasses();
     }
   }, [user]);

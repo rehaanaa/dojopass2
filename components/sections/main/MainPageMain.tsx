@@ -47,30 +47,14 @@ export default function MainPageMain() {
     setPasses(staticPasses);
   }, []);
 
-  // CRITICAL: Handle authentication state changes
+  // Handle authentication state changes - only redirect once
   useEffect(() => {
-    console.log('Auth state changed:', { user: !!user, loading, userEmail: user?.email });
-    
-    if (user && !loading) {
+    if (user && !loading && window.location.pathname === '/') {
       console.log('User authenticated, redirecting to pass page:', user.email);
-      // Force redirect to pass page - this ensures dojopass.store becomes /pass page
-      setTimeout(() => {
-        if (window.location.pathname === '/') {
-          console.log('Forcing redirect to /pass page');
-          window.location.href = '/pass';
-        }
-      }, 100);
-    } else if (loading) {
-      console.log('Still loading authentication...');
-    } else if (!user) {
-      console.log('No user found, showing landing page');
-      // Ensure we're on the landing page if user is not authenticated
-      if (window.location.pathname !== '/') {
-        console.log('User logged out, redirecting to landing page');
-        window.location.href = '/';
-      }
+      // Use router.push instead of window.location for better performance
+      router.push('/pass');
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   const handleAuthClick = async () => {
     await handleAuthClickUtil(user, signInWithGoogle);
@@ -84,18 +68,7 @@ export default function MainPageMain() {
     handlePlatformClickUtil(platform, user, handleAuthClick);
   };
 
-  // If user is logged in, show loading and redirect
-  if (user && !loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground mb-2">Redirecting to passes...</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Please wait...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div 
@@ -106,12 +79,7 @@ export default function MainPageMain() {
         transformOrigin: 'top left'
       }}
     >
-      {/* Show loading spinner while checking authentication */}
-      {loading && (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      )}
+
 
       {/* Only show landing page content if not loading and user is not authenticated */}
       {!loading && !user && (

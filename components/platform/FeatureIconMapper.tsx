@@ -6,6 +6,8 @@ import { Monitor, Tag, Star, Gamepad2, Zap, CheckCircle, CheckCircle2, Bot, Cloc
 export default function FeatureIconMapper() {
   // Helper function to get icon component based on feature name
   const getFeatureIcon = (featureName: string) => {
+    console.log('🔍 Platform FeatureIconMapper - getting icon for:', featureName);
+    
     const iconMap: { [key: string]: React.ReactNode } = {
       // Game features
       'PlayStation, Steam, Xbox': <Gamepad2 className="w-4 h-4" />,
@@ -90,7 +92,21 @@ export default function FeatureIconMapper() {
       'High Quality Audio': <Headphones className="w-4 h-4" />,
       'Premium Quality': <Sparkles className="w-4 h-4" />,
       'Multiple Languages': <Languages className="w-4 h-4" />,
-      'Exclusive Shows': <Theater className="w-4 h-4" />
+      'Exclusive Shows': <Theater className="w-4 h-4" />,
+      
+      // Platform-specific features from database
+      '4K Ultra HD': <Video className="w-4 h-4" />,
+      '4 Screens': <Tv className="w-4 h-4" />,
+      'Original Content': <Theater className="w-4 h-4" />,
+      'High Quality Audio': <Headphones className="w-4 h-4" />,
+      'Offline Downloads': <Download className="w-4 h-4" />,
+      'Ad-Free': <CheckCircle className="w-4 h-4" />,
+      'Family Friendly': <Users className="w-4 h-4" />,
+      '4K HDR': <Video className="w-4 h-4" />,
+      'Multiple Profiles': <Users className="w-4 h-4" />,
+      'Premium Games': <Gamepad2 className="w-4 h-4" />,
+      'Achievements': <Crown className="w-4 h-4" />,
+      'Multiplayer': <Users className="w-4 h-4" />
     };
     
     // Try exact match first
@@ -148,7 +164,9 @@ export default function FeatureIconMapper() {
     }
     
     // Final fallback - use Star icon for any unmatched features
-    return <Star className="w-4 h-4" />;
+    const fallbackIcon = <Star className="w-4 h-4" />;
+    console.log('🔍 Platform FeatureIconMapper - using fallback icon for:', featureName);
+    return fallbackIcon;
   };
 
   return { getFeatureIcon };

@@ -10,7 +10,8 @@ const nextConfig = {
       'picsum.photos',
       'placehold.co',
       'placehold.it',
-      'dummyimage.com'
+      'dummyimage.com',
+      'mbzxsvhuswrowjlujhco.supabase.co'
     ],
     remotePatterns: [
       {
@@ -21,11 +22,26 @@ const nextConfig = {
         protocol: 'http',
         hostname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'mbzxsvhuswrowjlujhco.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/sign/**',
+      },
     ],
     unoptimized: true,
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+  },
+  webpack: (config, { isServer }) => {
+    // Suppress Supabase Realtime critical dependency warning
+    config.ignoreWarnings = [
+      { module: /node_modules\/@supabase\/realtime-js/ },
+      { message: /Critical dependency: the request of a dependency is an expression/ }
+    ];
+    
+    return config;
   },
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,

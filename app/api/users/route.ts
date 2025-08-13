@@ -1,29 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createServerSupabaseClient } from '@/lib/supabase';
 
 // GET - Get user by email
 export async function GET(request: NextRequest) {
   try {
-    // Check if Supabase environment variables are configured
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Create Supabase client using service role key
+    const supabase = createServerSupabaseClient();
+    
+    if (!supabase) {
       return NextResponse.json(
-        { success: false, error: 'Supabase configuration not found' },
+        { success: false, error: 'Database configuration error' },
         { status: 500 }
       );
     }
-
-    // Create Supabase client using environment variables
-    // For API routes, we might need to use service role key to bypass RLS
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    );
 
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
@@ -34,9 +23,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log('API: Looking for user with email:', email);
-    console.log('API: Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing');
-    console.log('API: Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing');
+
 
     // Get user by email
     const { data: user, error } = await supabase
@@ -46,7 +33,6 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('API: Database error:', error);
       if (error.code === 'PGRST116') {
         return NextResponse.json({
           success: false,
@@ -62,16 +48,18 @@ export async function GET(request: NextRequest) {
       }, { status: 500 });
     }
 
-    console.log('API: User found:', user);
     return NextResponse.json({
       success: true,
       data: user
     });
 
   } catch (error) {
-    console.error('API: Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        success: false,
+        error: 'Internal server error',
+        details: error 
+      },
       { status: 500 }
     );
   }
@@ -80,26 +68,15 @@ export async function GET(request: NextRequest) {
 // POST - Create or update user
 export async function POST(request: NextRequest) {
   try {
-    // Check if Supabase environment variables are configured
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Create Supabase client using service role key
+    const supabase = createServerSupabaseClient();
+    
+    if (!supabase) {
       return NextResponse.json(
-        { success: false, error: 'Supabase configuration not found' },
+        { success: false, error: 'Database configuration error' },
         { status: 500 }
       );
     }
-
-    // Create Supabase client using environment variables
-    // For API routes, we might need to use service role key to bypass RLS
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    );
 
     const body = await request.json();
     const { email } = body;
@@ -110,9 +87,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log('API: Creating/updating user with email:', email);
-    console.log('API: Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing');
-    console.log('API: Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing');
+
 
     // Check if user already exists
     const { data: existingUser, error: fetchError } = await supabase
@@ -124,7 +99,6 @@ export async function POST(request: NextRequest) {
     if (fetchError) {
       if (fetchError.code === 'PGRST116') {
         // User doesn't exist, create new user
-        console.log('API: User not found, creating new user');
         
         // Generate dojo_id with format: DOJOPS + 4 random digits
         const randomDigits = Math.floor(1000 + Math.random() * 9000); // 1000-9999
@@ -136,8 +110,6 @@ export async function POST(request: NextRequest) {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
-
-        console.log('API: Attempting to insert user profile:', userProfile);
         
         const { data: newUser, error: insertError } = await supabase
           .from('dojo_users')
@@ -146,20 +118,12 @@ export async function POST(request: NextRequest) {
           .single();
 
         if (insertError) {
-          console.error('API: Error creating user:', insertError);
-          console.error('API: Error code:', insertError.code);
-          console.error('API: Error message:', insertError.message);
-          console.error('API: Error details:', insertError.details);
-          console.error('API: Error hint:', insertError.hint);
-          
           return NextResponse.json({
             success: false,
             error: 'Error creating user',
             details: insertError
           }, { status: 500 });
         }
-
-        console.log('API: New user created:', newUser);
         return NextResponse.json({
           success: true,
           data: newUser,
@@ -167,7 +131,6 @@ export async function POST(request: NextRequest) {
         });
       } else {
         // Other database error
-        console.error('API: Error fetching existing user:', fetchError);
         return NextResponse.json({
           success: false,
           error: 'Error fetching user',
@@ -177,14 +140,12 @@ export async function POST(request: NextRequest) {
     }
 
     // User exists, update timestamp and return existing user
-    console.log('API: User exists, updating timestamp');
     const { error: updateError } = await supabase
       .from('dojo_users')
       .update({ updated_at: new Date().toISOString() })
       .eq('email', email);
       
     if (updateError) {
-      console.warn('API: Failed to update user timestamp:', updateError);
       // Continue anyway - the user data is still valid
     }
     
@@ -195,7 +156,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('API: Unexpected error in POST:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

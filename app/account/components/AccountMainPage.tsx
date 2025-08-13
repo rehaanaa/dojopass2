@@ -30,7 +30,7 @@ interface UserPass {
   price: number;
   payment_amount?: number; // Add this for compatibility
   duration_days: number;
-  image_url: string | null;
+  image: string | null;
   features: any[];
   offers: any | null;
   completed?: boolean;
@@ -42,7 +42,7 @@ export default function AccountMainPage() {
   const { user, loading: authLoading, signOut, dojoUser } = useAuth();
   const router = useRouter();
   const [userPasses, setUserPasses] = useState<UserPass[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'passes' | 'settings'>('passes');
   const [selectedPass, setSelectedPass] = useState<UserPass | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -69,67 +69,60 @@ export default function AccountMainPage() {
           try {
             console.log('Fetching passes from API for user:', dojoUser.id);
             const response = await fetch(`/api/user-purchased?user_id=${dojoUser.id}`);
+            console.log('API response status:', response.status);
             
             if (response.ok) {
               const result = await response.json();
+              console.log('Raw API response:', result);
+              
               if (result.success && result.data) {
                 console.log('API passes fetched:', result.data);
                 
                 // Transform API data to match UserPass interface
-                const apiPasses = result.data.map((pass: any) => ({
-                  id: pass.id,
-                  platform_id: pass.platform_id,
-                  name: pass.pass_name,
-                  description: pass.passes?.description || '',
-                  price: pass.price,
-                  payment_amount: pass.price,
-                  duration_days: pass.duration_days,
-                  image_url: pass.platforms?.image_url || null,
-                  features: [],
-                  offers: null,
-                  completed: false,
-                  created_at: pass.purchase_date,
-                  updated_at: pass.updated_at
-                }));
+                const apiPasses = result.data.map((pass: any) => {
+                  console.log('Processing pass:', pass);
+                  const transformedPass = {
+                    id: pass.id,
+                    platform_id: pass.platform_id,
+                    name: pass.passes?.title || pass.platforms?.title || 'Unknown Pass',
+                    description: '', // Not needed for display
+                    price: pass.amount_paid || 0,
+                    payment_amount: pass.amount_paid || 0,
+                    duration_days: 0, // Not in the table
+                    image: null, // Not in the table
+                    features: [],
+                    offers: null,
+                    completed: pass.payment_status === 'completed',
+                    created_at: pass.purchase_date || pass.created_at,
+                    updated_at: pass.updated_at || pass.purchase_date
+                  };
+                  console.log('Transformed pass:', transformedPass);
+                  return transformedPass;
+                });
                 
                 allPasses = [...allPasses, ...apiPasses];
+              } else {
+                console.warn('API response not successful:', result.error);
               }
             } else {
-              console.warn('API response not ok:', response.status);
+              console.warn('API response not ok:', response.status, response.statusText);
+              try {
+                const errorData = await response.json();
+                console.error('API error details:', errorData);
+              } catch (parseError) {
+                console.error('Could not parse API error response');
+              }
             }
           } catch (apiError) {
             console.error('Error fetching from API:', apiError);
           }
+        } else {
+          console.log('No dojoUser ID available, skipping API call');
         }
         
-        // Then check localStorage for any additional passes
-        const storedPasses = localStorage.getItem('user_purchased');
-        if (storedPasses) {
-          try {
-            const passes = JSON.parse(storedPasses);
-            console.log('Found existing passes in localStorage:', passes);
-            
-            // Ensure unique IDs by adding timestamp if duplicates exist
-            const uniquePasses: UserPass[] = passes.map((pass: any, index: number) => {
-              // If ID is 1, make it unique by adding timestamp
-              if (pass.id === 1) {
-                const uniqueId = Date.now() + index;
-                console.log(`Changing duplicate ID 1 to ${uniqueId} for pass:`, pass.name);
-                return { ...pass, id: uniqueId };
-              }
-              return pass;
-            });
-            
-            // Merge with API passes, avoiding duplicates
-            const existingIds = new Set(allPasses.map(p => p.id));
-            const uniqueLocalPasses = uniquePasses.filter((pass: UserPass) => !existingIds.has(pass.id));
-            
-            allPasses = [...allPasses, ...uniqueLocalPasses];
-          } catch (parseError) {
-            console.error('Error parsing stored passes:', parseError);
-            localStorage.removeItem('user_purchased');
-          }
-        }
+        // Only use database passes - localStorage is just a fallback for failed purchases
+        // and should not be mixed with database data to avoid duplicates
+        console.log('Using only database passes to avoid duplicates');
         
         console.log('All passes combined:', allPasses);
         setUserPasses(allPasses);
@@ -195,28 +188,7 @@ export default function AccountMainPage() {
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-center h-64 space-y-4">
-            <div className="text-center">
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                Authentication Required
-              </h2>
-              <p className="text-muted-foreground mb-4">
-                Please log in to access your account.
-              </p>
-              <button
-                onClick={() => router.push('/')}
-                className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors duration-200"
-              >
-                Go to Login
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return null; // Don't show anything, just redirect
   }
 
   return (
@@ -224,8 +196,8 @@ export default function AccountMainPage() {
       {/* UserPass Component - User Avatar in top right */}
       <UserPass />
       
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-full max-w-md mx-auto px-4">
+      <div className="container mx-auto px-4 py-8">
+        <div className="w-full max-w-md mx-auto">
           {/* Header and Tabs */}
           <AccountHeader 
             activeTab={activeTab}

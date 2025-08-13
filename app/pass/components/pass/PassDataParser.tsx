@@ -1,7 +1,3 @@
-'use client';
-
-import React from 'react';
-
 export default function PassDataParser() {
   // Parse features if they come as JSON string
   const parseFeatures = (features: any) => {
@@ -28,31 +24,53 @@ export default function PassDataParser() {
 
   // Parse offers if they come as JSON string
   const parseOffers = (offers: any) => {
+    console.log('🔍 Parsing offers:', offers, 'Type:', typeof offers);
+    
+    if (!offers) return [];
+    
     if (typeof offers === 'string') {
       try {
-        return JSON.parse(offers);
+        const parsed = JSON.parse(offers);
+        console.log('🔍 Parsed offers from string:', parsed);
+        return Array.isArray(parsed) ? parsed : [parsed];
       } catch (e) {
-        return offers;
+        console.warn('Failed to parse offers JSON:', e);
+        return [];
       }
     }
-    return offers;
+    
+    if (Array.isArray(offers)) {
+      console.log('🔍 Offers is already array:', offers);
+      return offers;
+    }
+    
+    if (typeof offers === 'object') {
+      console.log('🔍 Offers is object, converting to array:', offers);
+      return [offers];
+    }
+    
+    console.log('🔍 Offers fallback to empty array');
+    return [];
   };
 
   // Format offers for display with proper icon mapping
   const formatOffers = (offers: any) => {
-    if (!offers) return null;
-    
     const parsed = parseOffers(offers);
+    console.log('🔍 Formatting offers, parsed:', parsed);
     
     if (Array.isArray(parsed)) {
-      return parsed.filter(offer => offer && typeof offer === 'object');
+      // Filter offers that have either title or discount properties
+      const filtered = parsed.filter(offer => 
+        offer && 
+        typeof offer === 'object' && 
+        (offer.title || offer.discount || offer.name || offer.text)
+      );
+      console.log('🔍 Filtered offers:', filtered);
+      return filtered;
     }
     
-    if (typeof parsed === 'object') {
-      return [parsed];
-    }
-    
-    return null;
+    console.log('🔍 No offers to format');
+    return [];
   };
 
   return { parseFeatures, parseOffers, formatOffers };

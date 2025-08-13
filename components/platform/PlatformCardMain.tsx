@@ -20,6 +20,14 @@ export default function PlatformCardMain({ platform, onClick }: PlatformCardMain
   const features = parseFeatures(platform.features);
   const offers = parseOffers(platform.offers);
   const formattedOffers = formatOffers(platform.offers);
+  
+  console.log('🔍 PlatformCardMain - platform data:', {
+    features: platform.features,
+    offers: platform.offers,
+    parsedFeatures: features,
+    parsedOffers: offers,
+    formattedOffers: formattedOffers
+  });
 
   return (
     <div
