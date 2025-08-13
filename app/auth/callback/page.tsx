@@ -1,36 +1,57 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 export default function AuthCallback() {
   const router = useRouter();
+  const [status, setStatus] = useState('Checking authentication...');
 
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Handle the OAuth callback
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-          console.error('Auth callback error:', error);
-          router.push('https://dojopass.store?error=auth_failed');
+        setStatus('Checking session...');
+        
+        // First try to get the current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session error:', sessionError);
+          setStatus('Session error, redirecting to home...');
+          setTimeout(() => {
+            router.push('https://dojopass.store?error=session_error');
+          }, 2000);
           return;
         }
 
-        if (data.session) {
-          // Successfully authenticated, redirect directly to pass page
-          console.log('User authenticated, redirecting to pass page');
-          router.push('https://dojopass.store/pass');
+        console.log('Session data:', session);
+        
+        if (session && session.user) {
+          // Successfully authenticated
+          console.log('User authenticated:', session.user.email);
+          setStatus('Authentication successful! Redirecting to passes...');
+          
+          // Redirect to main page (which will show passes for logged-in users)
+          setTimeout(() => {
+            window.location.href = 'https://dojopass.store';
+          }, 1000);
         } else {
-          // No session, redirect to home
-          console.log('No session found, redirecting to home');
-          router.push('https://dojopass.store');
+          // No session found
+          console.log('No session found');
+          setStatus('No session found, redirecting to home...');
+          
+          setTimeout(() => {
+            router.push('https://dojopass.store');
+          }, 2000);
         }
       } catch (error) {
         console.error('Unexpected error in auth callback:', error);
-        router.push('https://dojopass.store?error=unexpected');
+        setStatus('Unexpected error, redirecting to home...');
+        
+        setTimeout(() => {
+          router.push('https://dojopass.store?error=unexpected');
+        }, 2000);
       }
     };
 
@@ -41,7 +62,8 @@ export default function AuthCallback() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Completing sign in...</p>
+        <p className="text-muted-foreground mb-2">Completing sign in...</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{status}</p>
       </div>
     </div>
   );

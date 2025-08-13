@@ -1,0 +1,5 @@
+[33me1c568b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add Vercel Speed Insights for performance monitoring
+[33m164c27f[m Fix auth flow: redirect to /pass page after login instead of landing page
+[33m641de58[m Fix OAuth redirect flow to use custom domain dojopass.store
+[33mbf1f329[m Fix all build errors - ready for deployment
+[33ma75633c[m Initial commit: DojoPass digital pass store

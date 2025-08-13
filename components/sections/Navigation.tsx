@@ -38,7 +38,7 @@ export default function Navigation({ user, handleAuthClick, handleSignOut }: Nav
                   )}
                   <span className="text-sm text-foreground">{(user as any)?.email || 'User'}</span>
                 </div>
-                <a href="/pass" className="btn-landing text-xs px-3 py-2">
+                <a href="/" className="btn-landing text-xs px-3 py-2">
                   My Passes
                 </a>
                 <button onClick={handleSignOut} className="px-3 py-1.5 border border-border hover:border-border/80 text-foreground hover:text-foreground/80 transition-colors text-sm rounded-lg">
@@ -65,7 +65,7 @@ export default function Navigation({ user, handleAuthClick, handleSignOut }: Nav
                     {(user as any)?.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
                 )}
-                <a href="/pass" className="btn-landing text-xs px-3 py-2">
+                <a href="/" className="btn-landing text-xs px-3 py-2">
                   My Passes
                 </a>
               </div>

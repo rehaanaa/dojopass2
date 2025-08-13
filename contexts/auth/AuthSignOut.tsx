@@ -27,6 +27,11 @@ export default function AuthSignOut() {
       clearAllStoredData();
       
       console.log('Signed out successfully');
+      
+      // Redirect to main page (landing page for non-logged-in users)
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
