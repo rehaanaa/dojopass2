@@ -4,11 +4,29 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Create Supabase client - will use env vars when available
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder_key'
-);
+// Create Supabase client only if environment variables are available
+let supabase: any = null;
+
+if (supabaseUrl && supabaseAnonKey) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+  // Create a mock client for development when env vars are missing
+  supabase = {
+    auth: {
+      getSession: async () => ({ data: { session: null }, error: null }),
+      signInWithOAuth: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      signOut: async () => ({ error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+    },
+    from: () => ({
+      select: () => ({
+        limit: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } })
+      })
+    })
+  };
+}
+
+export { supabase };
 
 // Test connection function
 export const testSupabaseConnection = async () => {
