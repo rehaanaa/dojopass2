@@ -1,94 +1,64 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
-import AuthStorageManager from './AuthStorageManager';
-import AuthUserManager from './AuthUserManager';
-import AuthAutoLogin from './AuthAutoLogin';
+import { signInWithGoogle } from './AuthGoogleSignIn';
 import AuthSessionManager from './AuthSessionManager';
-import { signInWithGoogle as signInWithGoogleUtil } from './AuthGoogleSignIn';
-import AuthSignOut from './AuthSignOut';
-
-import AuthLogout from './AuthLogout';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  dojoUser: any;
   loading: boolean;
-  dojoUser: any | null;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
-  autoLogin: () => Promise<void>;
   logout: () => Promise<void>;
+  autoLogin: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [dojoUser, setDojoUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [dojoUser, setDojoUser] = useState<any | null>(null);
 
   // Import all auth utilities
-  const { storeUserEmail, removeUserEmail, getStoredEmail, clearAllStoredData } = AuthStorageManager();
-  const { createOrUpdateDojoUser, getExistingUser } = AuthUserManager();
-  const { autoLogin: autoLoginUtil } = AuthAutoLogin();
   const { getInitialSession, handleAuthStateChange } = AuthSessionManager();
-
-  const { signOut: signOutUtil } = AuthSignOut();
-
-  const { logout: logoutUtil } = AuthLogout();
 
   // Auto-login function using stored email
   const autoLogin = async () => {
-    const storedEmail = getStoredEmail();
-    if (storedEmail && !dojoUser) {
-              console.log('Auto-login: Checking for existing user with email:', storedEmail);
-      
-      // First try to get existing user data
-      const existingUser = await getExistingUser(storedEmail);
-      
-      if (existingUser) {
-                  console.log('Auto-login: Found existing user, setting dojoUser');
-        setDojoUser(existingUser);
-      } else {
-                  console.log('Auto-login: No existing user found, will create on first interaction');
-        // User will be created when they first interact with the app
-      }
-    }
+    // The email-based login logic is removed, so this function is no longer needed.
+    // The user will be set directly by Supabase on auth state change.
   };
 
   useEffect(() => {
     // Get initial session
     const initializeAuth = async () => {
-      await getInitialSession(setSession, setUser, setLoading, createOrUpdateDojoUser, setDojoUser);
+      await getInitialSession(setSession, setUser, setLoading, setDojoUser);
     };
-
-    // Add timeout to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      console.warn('Authentication timeout - setting loading to false');
-      setLoading(false);
-    }, 10000); // 10 second timeout
 
     initializeAuth();
 
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  useEffect(() => {
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         handleAuthStateChange(
           event,
           session,
           setSession,
           setUser,
-          setDojoUser,
-          createOrUpdateDojoUser,
-          removeUserEmail
+          setDojoUser
         );
       }
     );
@@ -96,52 +66,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogleHandler = async () => {
     try {
       setLoading(true);
-      const result = await signInWithGoogleUtil();
+      const result = await signInWithGoogle();
       console.log('Google sign-in initiated:', result);
       // The redirect will happen automatically via Supabase
     } catch (error) {
-      console.error('Google sign-in failed:', error);
-      // Handle error appropriately
+      console.error('Error signing in with Google:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const signOut = async () => {
-    await signOutUtil(removeUserEmail, setUser, setSession, setDojoUser, clearAllStoredData);
+    await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+    setDojoUser(null);
   };
-
-
 
   const logout = async (): Promise<void> => {
-    await logoutUtil(setUser, setSession, setDojoUser, removeUserEmail, clearAllStoredData);
+    await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+    setDojoUser(null);
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     session,
-    loading,
     dojoUser,
-    signInWithGoogle,
+    loading,
+    signInWithGoogle: signInWithGoogleHandler,
     signOut,
-    autoLogin,
     logout,
+    autoLogin,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

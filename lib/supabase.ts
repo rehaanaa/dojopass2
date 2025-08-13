@@ -1,23 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Check if environment variables are set
+// Get environment variables
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase environment variables are missing!');
-  console.error('Please create a .env.local file with:');
-  console.error('NEXT_PUBLIC_SUPABASE_URL=https://yourproject.supabase.co');
-  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here');
+  console.error('Missing Supabase environment variables. Please check your .env.local file and ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.');
+  console.error('The app will not function properly without these variables.');
   
-  // Provide fallback for development
-  if (typeof window !== 'undefined') {
-    console.warn('Running without Supabase - some features will not work');
+  // In development, provide fallback to prevent crashes
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('Running in development mode with fallback values. Create .env.local for full functionality.');
   }
 }
 
-// Create Supabase client with validation
+// Create Supabase client with fallbacks for development
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder_key'
@@ -26,6 +24,7 @@ export const supabase = createClient(
 // Test connection function
 export const testSupabaseConnection = async () => {
   try {
+    // Check if environment variables are properly set
     if (!supabaseUrl || !supabaseAnonKey) {
       return {
         success: false,
