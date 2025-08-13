@@ -4,14 +4,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Validate environment variables
+// Check environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables. Please check your .env.local file and ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.');
-  console.error('The app will not function properly without these variables.');
-  
-  // In development, provide fallback to prevent crashes
+  // Only show warning in development, not in production
   if (process.env.NODE_ENV === 'development') {
-    console.warn('Running in development mode with fallback values. Create .env.local for full functionality.');
+    console.warn('⚠️ Supabase environment variables not found. Create .env.local for full functionality.');
+    console.warn('📝 Add these to your .env.local file:');
+    console.warn('   NEXT_PUBLIC_SUPABASE_URL=https://yourproject.supabase.co');
+    console.warn('   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here');
   }
 }
 
