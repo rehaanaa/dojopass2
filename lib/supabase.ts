@@ -1,21 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Get environment variables
+// Get environment variables silently
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Check environment variables
-if (!supabaseUrl || !supabaseAnonKey) {
-  // Only show warning in development, not in production
-  if (process.env.NODE_ENV === 'development') {
-    console.warn('⚠️ Supabase environment variables not found. Create .env.local for full functionality.');
-    console.warn('📝 Add these to your .env.local file:');
-    console.warn('   NEXT_PUBLIC_SUPABASE_URL=https://yourproject.supabase.co');
-    console.warn('   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here');
-  }
-}
-
-// Create Supabase client with fallbacks for development
+// Create Supabase client - will use env vars when available
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder_key'

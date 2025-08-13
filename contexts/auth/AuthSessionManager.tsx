@@ -79,6 +79,10 @@ export default function AuthSessionManager() {
       setSession(null);
       setUser(null);
       setDojoUser(null);
+      
+      // Redirect to landing page after logout
+      console.log('User signed out, redirecting to landing page');
+      window.location.href = '/';
     }
   };
 

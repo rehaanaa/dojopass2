@@ -47,7 +47,7 @@ export default function MainPageMain() {
     setPasses(staticPasses);
   }, []);
 
-  // CRITICAL: Immediate redirect for authenticated users
+  // CRITICAL: Handle authentication state changes
   useEffect(() => {
     console.log('Auth state changed:', { user: !!user, loading, userEmail: user?.email });
     
@@ -64,6 +64,11 @@ export default function MainPageMain() {
       console.log('Still loading authentication...');
     } else if (!user) {
       console.log('No user found, showing landing page');
+      // Ensure we're on the landing page if user is not authenticated
+      if (window.location.pathname !== '/') {
+        console.log('User logged out, redirecting to landing page');
+        window.location.href = '/';
+      }
     }
   }, [user, loading]);
 
