@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     console.log('Platforms API: Starting request...');
     
     // Check if Supabase environment variables are configured
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       console.error('Platforms API: Supabase environment variables missing');
       return NextResponse.json(
         { success: false, error: 'Supabase configuration not found' },
@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
 
     console.log('Platforms API: Environment variables found');
     console.log('Platforms API: Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing');
-    console.log('Platforms API: Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing');
+    console.log('Platforms API: Service Role Key:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Set' : 'Missing');
 
-    // Create Supabase client using environment variables
+    // Create Supabase client using service role key for server-side access
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
     
     console.log('Platforms API: Supabase client created');

@@ -7,17 +7,17 @@ export async function GET(request: NextRequest) {
     const platformId = searchParams.get('platform_id');
 
     // Check if Supabase environment variables are configured
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return NextResponse.json(
         { success: false, error: 'Supabase configuration not found' },
         { status: 500 }
       );
     }
 
-    // Create Supabase client using environment variables
+    // Create Supabase client using service role key for server-side access
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
     // Build query based on platform_id parameter
