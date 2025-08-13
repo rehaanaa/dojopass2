@@ -6,40 +6,63 @@ import { supabase } from '@/lib/supabase';
 
 export default function AuthCallback() {
   const router = useRouter();
-  const [status, setStatus] = useState('Checking authentication...');
+  const [status, setStatus] = useState('Processing authentication...');
 
   useEffect(() => {
-    const handleAuthCallback = async () => {
+    const handleGoogleCallback = async () => {
       try {
-        setStatus('Checking session...');
+        setStatus('Processing Google OAuth callback...');
         
-        // First try to get the current session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        // Get the authorization code from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        
+        if (error) {
+          console.error('Google OAuth error:', error);
+          setStatus('Authentication failed, redirecting to home...');
+          setTimeout(() => {
+            router.push('https://dojopass.store?error=auth_failed');
+          }, 2000);
+          return;
+        }
+        
+        if (!code) {
+          console.error('No authorization code received');
+          setStatus('No authorization code, redirecting to home...');
+          setTimeout(() => {
+            router.push('https://dojopass.store?error=no_code');
+          }, 2000);
+          return;
+        }
+
+        setStatus('Creating Supabase session...');
+        
+        // Exchange code for tokens and create Supabase session
+        const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
         
         if (sessionError) {
-          console.error('Session error:', sessionError);
-          setStatus('Session error, redirecting to home...');
+          console.error('Session creation error:', sessionError);
+          setStatus('Session creation failed, redirecting to home...');
           setTimeout(() => {
             router.push('https://dojopass.store?error=session_error');
           }, 2000);
           return;
         }
 
-        console.log('Session data:', session);
-        
-        if (session && session.user) {
+        if (data.session && data.user) {
           // Successfully authenticated
-          console.log('User authenticated:', session.user.email);
+          console.log('User authenticated:', data.user.email);
           setStatus('Authentication successful! Redirecting to passes...');
           
-          // Redirect to main page (which will show passes for logged-in users)
+          // Force redirect to pass page
           setTimeout(() => {
-            window.location.href = 'https://dojopass.store';
+            window.location.href = 'https://dojopass.store/pass';
           }, 1000);
         } else {
-          // No session found
-          console.log('No session found');
-          setStatus('No session found, redirecting to home...');
+          // No session created
+          console.log('No session created');
+          setStatus('No session created, redirecting to home...');
           
           setTimeout(() => {
             router.push('https://dojopass.store');
@@ -55,7 +78,7 @@ export default function AuthCallback() {
       }
     };
 
-    handleAuthCallback();
+    handleGoogleCallback();
   }, [router]);
 
   return (

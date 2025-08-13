@@ -15,8 +15,7 @@ export default function Navigation({ user, handleAuthClick, handleSignOut }: Nav
         <div className="flex justify-between items-center h-14">
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
-              <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8 mr-2" />
-              <h1 className="text-xl font-bold text-primary">DojoPass</h1>
+              <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8" />
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
@@ -38,7 +37,7 @@ export default function Navigation({ user, handleAuthClick, handleSignOut }: Nav
                   )}
                   <span className="text-sm text-foreground">{(user as any)?.email || 'User'}</span>
                 </div>
-                <a href="/" className="btn-landing text-xs px-3 py-2">
+                <a href="/pass" className="btn-landing text-xs px-3 py-2">
                   My Passes
                 </a>
                 <button onClick={handleSignOut} className="px-3 py-1.5 border border-border hover:border-border/80 text-foreground hover:text-foreground/80 transition-colors text-sm rounded-lg">
@@ -65,7 +64,7 @@ export default function Navigation({ user, handleAuthClick, handleSignOut }: Nav
                     {(user as any)?.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
                 )}
-                <a href="/" className="btn-landing text-xs px-3 py-2">
+                <a href="/pass" className="btn-landing text-xs px-3 py-2">
                   My Passes
                 </a>
               </div>

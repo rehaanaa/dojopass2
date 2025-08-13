@@ -66,7 +66,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <Button 
                   size="sm" 
                   className="text-base px-6 py-2 bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:text-white dark:hover:bg-green-700"
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => window.location.href = '/pass'}
                 >
                   Go to Passes
                 </Button>

@@ -20,10 +20,16 @@ export default function MainPageMain() {
   const { user, signOut, signInWithGoogle, loading } = useAuth();
 
   // Import all main page utilities
-  const { getFeatureIcon } = MainFeatureIconMapper();
-  const { parseFeatures, parseOffers, formatOffers } = MainDataParser();
-  const { loadStaticPlatforms, loadStaticPasses, loadPasses } = MainDataLoader();
-  const { handleAuthClick: handleAuthClickUtil, handleSignOut: handleSignOutUtil, handlePlatformClick: handlePlatformClickUtil } = MainAuthHandler();
+  const featureIconMapper = MainFeatureIconMapper();
+  const dataParser = MainDataParser();
+  const dataLoader = MainDataLoader();
+  const authHandler = MainAuthHandler();
+
+  // Extract functions from the utility objects
+  const { getFeatureIcon } = featureIconMapper;
+  const { parseFeatures, parseOffers, formatOffers } = dataParser;
+  const { loadStaticPlatforms, loadStaticPasses, loadPasses } = dataLoader;
+  const { handleAuthClick: handleAuthClickUtil, handleSignOut: handleSignOutUtil, handlePlatformClick: handlePlatformClickUtil } = authHandler;
 
   useEffect(() => {
     // Remove setInterval to prevent timeout errors
