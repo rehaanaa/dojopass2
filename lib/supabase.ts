@@ -14,7 +14,11 @@ if (supabaseUrl && supabaseAnonKey) {
   supabase = {
     auth: {
       getSession: async () => ({ data: { session: null }, error: null }),
-      signInWithOAuth: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      signInWithOAuth: async () => {
+        // Show user-friendly message instead of redirecting to invalid URL
+        alert('Supabase not configured. Please add environment variables to enable authentication.');
+        return { data: null, error: { message: 'Supabase not configured' } };
+      },
       signOut: async () => ({ error: null }),
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
     },

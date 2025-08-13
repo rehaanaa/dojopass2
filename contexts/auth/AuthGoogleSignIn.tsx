@@ -5,6 +5,12 @@ import { supabase } from '@/lib/supabase';
 
 export const signInWithGoogle = async () => {
   try {
+    // Check if Supabase is properly configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      alert('Supabase not configured. Please add environment variables to enable authentication.');
+      return { error: { message: 'Supabase not configured' } };
+    }
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
