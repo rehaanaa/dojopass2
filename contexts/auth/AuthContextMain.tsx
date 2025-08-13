@@ -72,13 +72,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const result = await signInWithGoogle();
       
       if (result.error) {
-        // Show user-friendly error message
-        if (result.error.message === 'Supabase not configured. Please add environment variables to enable authentication.') {
-          alert('Authentication is not configured. Please contact support.');
+        // Show user-friendly error message based on error type
+        if (result.error.code === 'MISSING_CONFIG') {
+          alert('Authentication is not configured. Please add your Supabase environment variables to .env.local file.');
+          console.error('Configuration missing:', result.error.details);
+        } else if (result.error.code === 'SIGN_IN_ERROR') {
+          alert(`Sign-in failed: ${result.error.message}`);
+          console.error('Sign-in error:', result.error.details);
         } else {
           alert(`Sign-in failed: ${result.error.message}`);
+          console.error('Unexpected error:', result.error);
         }
-        console.error('Google sign-in failed:', result.error);
       } else {
         console.log('Google sign-in initiated successfully');
         // The redirect will happen automatically via Supabase
