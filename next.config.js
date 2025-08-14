@@ -16,18 +16,16 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '**',
+        hostname: 'dojopass.store',
+        port: '',
+        pathname: '/storage/v1/object/sign/**',
       },
       {
         protocol: 'https',
         hostname: 'mbzxsvhuswrowjlujhco.supabase.co',
         port: '',
         pathname: '/storage/v1/object/sign/**',
-      },
+      }
     ],
     unoptimized: true,
   },

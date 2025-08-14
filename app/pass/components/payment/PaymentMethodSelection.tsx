@@ -34,7 +34,7 @@ export default function PaymentMethodSelection({
           <div className="flex flex-col items-center space-y-1">
             <div className="w-8 h-8 flex items-center justify-center">
               <Image
-                src="https://mbzxsvhuswrowjlujhco.supabase.co/storage/v1/object/sign/payment/upi.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82Nzg3MzVkNC1jMzBkLTQ1MmUtOWE5YS1kZThlODQwYzc1M2MiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwYXltZW50L3VwaS5wbmciLCJpYXQiOjE3NTUxMTQ5NzEsImV4cCI6MTc4NjY1MDk3MX0.g5PSRp0iMv3OTOf0gW9uktZbpRAq82jgPfRz-CYkdp8"
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dojopass.store'}/storage/v1/object/sign/payment/upi.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82Nzg3MzVkNC1jMzBkLTQ1MmUtOWE5YS1kZThlODQwYzc1M2MiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwYXltZW50L3VwaS5wbmciLCJpYXQiOjE3NTUxMTQ5NzEsImV4cCI6MTc4NjY1MDk3MX0.g5PSRp0iMv3OTOf0gW9uktZbpRAq82jgPfRz-CYkdp8`}
                 alt="UPI Payment"
                 width={32}
                 height={32}

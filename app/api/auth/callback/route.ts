@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+// Use the original Supabase URL for server-side operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function GET(request: NextRequest) {
+  // Always use the custom domain for redirects
+  const siteUrl = 'https://dojopass.store';
+  
   try {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
@@ -12,12 +16,12 @@ export async function GET(request: NextRequest) {
     
     if (error) {
       console.error('Google OAuth error:', error);
-      return NextResponse.redirect(new URL('/?error=auth_failed', request.url));
+      return NextResponse.redirect(new URL(`${siteUrl}/?error=auth_failed`));
     }
     
     if (!code) {
       console.error('No authorization code received');
-      return NextResponse.redirect(new URL('/?error=no_code', request.url));
+      return NextResponse.redirect(new URL(`${siteUrl}/?error=no_code`));
     }
 
     // Create Supabase client with service role key
@@ -28,20 +32,20 @@ export async function GET(request: NextRequest) {
     
     if (sessionError) {
       console.error('Session creation error:', sessionError);
-      return NextResponse.redirect(new URL('/?error=session_error', request.url));
+      return NextResponse.redirect(new URL(`${siteUrl}/?error=session_error`));
     }
 
     if (data.session && data.user) {
       // Successfully authenticated, redirect to pass page
       console.log('User authenticated:', data.user.email);
-      return NextResponse.redirect(new URL('/pass', request.url));
+      return NextResponse.redirect(new URL(`${siteUrl}/pass`));
     } else {
       // No session created
       console.log('No session created');
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL(siteUrl));
     }
   } catch (error) {
     console.error('Unexpected error in auth callback:', error);
-    return NextResponse.redirect(new URL('/?error=unexpected', request.url));
+    return NextResponse.redirect(new URL(`${siteUrl}/?error=unexpected`));
   }
 }
