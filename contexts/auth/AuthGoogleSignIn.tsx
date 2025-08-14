@@ -20,10 +20,7 @@ export const signInWithGoogle = async () => {
     }
 
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'https://dojopass.store/api/auth/callback'
-      }
+      provider: 'google'
     });
     
     if (error) {
