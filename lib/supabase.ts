@@ -8,8 +8,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce',
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dojopass.store'}/auth/callback`
+    flowType: 'pkce'
   }
 })
 

@@ -64,17 +64,21 @@ export const handleAuthStateChange = (
     
     // Fetch additional user data
     if (session.user) {
-      supabase
-        .from('users')
-        .select('*')
-        .eq('id', session.user.id)
-        .single()
-        .then(({ data: profile, error }) => {
+      (async () => {
+        try {
+          const { data: profile, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
           if (!error && profile) {
             setDojoUser(profile);
           }
-        })
-        .catch(console.error);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      })();
     }
   } else if (event === 'SIGNED_OUT') {
     setSession(null);
