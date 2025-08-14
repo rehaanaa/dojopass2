@@ -6,8 +6,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function GET(request: NextRequest) {
-  // Always use the custom domain for redirects
-  const siteUrl = 'https://dojopass.store';
+  // Get the site URL from environment or construct from request
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${request.headers.get('host')}`;
   
   try {
     const { searchParams } = new URL(request.url);
