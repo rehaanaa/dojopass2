@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Tag } from 'lucide-react';
-import { CardContent } from '@/components/ui/card';
 import FeatureIconMapper from './FeatureIconMapper';
 
 interface PlatformOffersProps {
@@ -34,41 +33,38 @@ export default function PlatformOffers({ formattedOffers }: PlatformOffersProps)
 
   if (!formattedOffers || formattedOffers.length === 0) {
     return (
-      <CardContent className="p-3 pt-0">
+      <div className="p-3 pt-0">
         <div className="mb-3">
           <div className="flex items-center mb-1">
-            <Tag className="w-3 h-3 mr-1 text-gray-400 dark:text-gray-500" />
-            <span className="text-xs font-medium text-gray-400 dark:text-gray-500">Offers</span>
+            <Tag className="w-3 h-3 mr-1 text-green-600 dark:text-green-400" />
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">Offers</span>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500">No special offers available</p>
+          <p className="text-[10px] md:text-xs text-green-600 dark:text-green-400">No special offers available</p>
         </div>
-      </CardContent>
+      </div>
     );
   }
 
   return (
-    <CardContent className="p-3 pt-0">
+    <div className="p-3 pt-0">
       {/* Offers */}
       <div className="mb-3">
         <div className="flex items-center mb-1">
-          <Tag className="w-3 h-3 mr-1 text-orange-600 dark:text-orange-400" />
-          <span className="text-xs font-medium text-gray-900 dark:text-gray-100">Offers</span>
+          <Tag className="w-3 h-3 mr-1 text-green-600 dark:text-green-400" />
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">Offers</span>
         </div>
         <ul className="space-y-1">
           {formattedOffers.map((offer: any, index: number) => {
             if (offer && typeof offer === 'object') {
-              const iconName = offer.icon || 'star';
-              const offerText = offer.text || offer.title || offer.name || 'Special Offer';
-              const offerColor = getOfferColor(offer);
-              
-              console.log('🔍 PlatformOffers rendering offer:', { iconName, offerText, offerColor });
-              
               return (
-                <li key={index} className={`flex items-center text-xs ${offerColor}`}>
-                  <span className="mr-1 flex-shrink-0">
-                    {getFeatureIcon(iconName)}
-                  </span>
-                  <span className="font-medium">{offerText}</span>
+                <li key={index} className="text-[11px] md:text-xs lg:text-sm text-green-600 dark:text-green-400">
+                  {offer.title || offer.name || offer.text || offer}
+                </li>
+              );
+            } else if (offer && typeof offer === 'string') {
+              return (
+                <li key={index} className="text-[11px] md:text-xs lg:text-sm text-green-600 dark:text-green-400">
+                  {offer}
                 </li>
               );
             }
@@ -76,6 +72,6 @@ export default function PlatformOffers({ formattedOffers }: PlatformOffersProps)
           })}
         </ul>
       </div>
-    </CardContent>
+    </div>
   );
 }

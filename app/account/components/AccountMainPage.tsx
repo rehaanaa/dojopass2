@@ -120,11 +120,11 @@ export default function AccountMainPage() {
           console.log('No dojoUser ID available, skipping API call');
         }
         
-        // Only use database passes - localStorage is just a fallback for failed purchases
-        // and should not be mixed with database data to avoid duplicates
-        console.log('Using only database passes to avoid duplicates');
+        // Only use API data - no localStorage fallback
+        console.log('AccountMainPage: Using only API data, no localStorage fallback');
         
-        console.log('All passes combined:', allPasses);
+        console.log('AccountMainPage: All passes combined:', allPasses);
+        console.log('AccountMainPage: Total passes count:', allPasses.length);
         setUserPasses(allPasses);
         
       } catch (error) {
@@ -138,11 +138,77 @@ export default function AccountMainPage() {
 
     if (user || dojoUser) {
       console.log('User authenticated, fetching passes...');
+      // Clear old localStorage data that's not in database
+      clearLocalStoragePasses();
       fetchUserPasses();
     } else {
       console.log('No user, setting loading to false');
       setLoading(false);
     }
+  }, [user, dojoUser]);
+
+  // Listen for custom events to refresh passes (e.g., after purchase)
+  useEffect(() => {
+    const handlePassPurchase = () => {
+      console.log('Pass purchase event received, refreshing passes...');
+      // Trigger a re-fetch of passes
+      if (user || dojoUser) {
+        const fetchUserPasses = async () => {
+          try {
+            setLoading(true);
+            let allPasses: UserPass[] = [];
+            
+            // Try API first
+            if (dojoUser?.id) {
+              try {
+                const response = await fetch(`/api/user-purchased?user_id=${dojoUser.id}`);
+                if (response.ok) {
+                  const result = await response.json();
+                  if (result.success && result.data) {
+                    const apiPasses = result.data.map((pass: any) => ({
+                      id: pass.id,
+                      platform_id: pass.platform_id,
+                      name: pass.passes?.title || pass.platforms?.title || 'Unknown Pass',
+                      description: '',
+                      price: pass.amount_paid || 0,
+                      payment_amount: pass.amount_paid || 0,
+                      duration_days: 0,
+                      image: null,
+                      features: [],
+                      offers: null,
+                      completed: pass.payment_status === 'completed',
+                      created_at: pass.purchase_date || pass.created_at,
+                      updated_at: pass.updated_at || pass.purchase_date
+                    }));
+                    allPasses = [...allPasses, ...apiPasses];
+                  }
+                }
+              } catch (apiError) {
+                console.error('Error refreshing from API:', apiError);
+              }
+            }
+            
+            // Only use API data - no localStorage fallback
+            console.log('AccountMainPage: Event refresh - Using only API data');
+            
+            console.log('AccountMainPage: Event refresh - Total passes count:', allPasses.length);
+            setUserPasses(allPasses);
+          } catch (error) {
+            console.error('Error refreshing passes:', error);
+          } finally {
+            setLoading(false);
+          }
+        };
+        
+        fetchUserPasses();
+      }
+    };
+
+    window.addEventListener('pass-purchased', handlePassPurchase);
+    
+    return () => {
+      window.removeEventListener('pass-purchased', handlePassPurchase);
+    };
   }, [user, dojoUser]);
 
   const handleLogout = async () => {
@@ -172,6 +238,16 @@ export default function AccountMainPage() {
     } catch (error) {
       console.error('Error deleting account:', error);
       setDeleting(false);
+    }
+  };
+
+  // Clear localStorage passes that are not in database
+  const clearLocalStoragePasses = () => {
+    try {
+      localStorage.removeItem('user_purchased');
+      console.log('AccountMainPage: Cleared localStorage passes');
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
     }
   };
 

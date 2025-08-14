@@ -20,7 +20,7 @@ export default function PassPlatformsSection({
       {loading ? (
         <DojoGridSkeleton count={5} variant="platform" />
       ) : platforms.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 mb-8">
           {platforms.map((platform) => (
             <PlatformCard
               key={platform.id}

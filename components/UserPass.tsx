@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { User, Shield, Settings, LogOut, Copy, Check, Ticket, Monitor, Sun, Moon } from 'lucide-react';
+import { User, Shield, Settings, LogOut, Copy, Check, Ticket, Monitor, Sun, Moon, Receipt } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -118,11 +118,68 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
     fetchDojoUser();
   }, [user?.email]);
 
+  // Fetch user passes from API when dojoUser is available
+  useEffect(() => {
+    const fetchUserPasses = async () => {
+      if (dojoUser?.id) {
+        try {
+          console.log('UserPass: Fetching passes from API for user:', dojoUser.id);
+          const response = await fetch(`/api/user-purchased?user_id=${dojoUser.id}`);
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success && result.data) {
+              console.log('UserPass: API passes fetched:', result.data.length);
+              setUserPasses(result.data);
+            } else {
+              console.log('UserPass: No passes found in database');
+              setUserPasses([]);
+            }
+          } else {
+            console.log('UserPass: API request failed');
+            setUserPasses([]);
+          }
+        } catch (apiError) {
+          console.error('UserPass: Error fetching from API:', apiError);
+          setUserPasses([]);
+        }
+      } else {
+        console.log('UserPass: No dojoUser ID available');
+        setUserPasses([]);
+      }
+    };
+
+    fetchUserPasses();
+  }, [dojoUser?.id]);
+
   // Listen for custom events to refresh passes (e.g., after purchase)
   useEffect(() => {
     const handlePassPurchase = () => {
-      const storedPasses = getUserPassesFromStorage();
-      setUserPasses(storedPasses);
+      // Refresh passes from API only
+      const fetchUserPasses = async () => {
+        if (dojoUser?.id) {
+          try {
+            const response = await fetch(`/api/user-purchased?user_id=${dojoUser.id}`);
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success && result.data) {
+                setUserPasses(result.data);
+              } else {
+                setUserPasses([]);
+              }
+            } else {
+              setUserPasses([]);
+            }
+          } catch (apiError) {
+            console.error('UserPass: Error refreshing from API:', apiError);
+            setUserPasses([]);
+          }
+        } else {
+          setUserPasses([]);
+        }
+      };
+
+      fetchUserPasses();
     };
 
     window.addEventListener('pass-purchased', handlePassPurchase);
@@ -130,7 +187,7 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
     return () => {
       window.removeEventListener('pass-purchased', handlePassPurchase);
     };
-  }, []);
+  }, [dojoUser?.id]);
 
   const handleLogout = async () => {
     try {
@@ -161,10 +218,22 @@ const UserPass: React.FC<UserPassProps> = ({ className }) => {
 
   const menuItems = [
     {
-      icon: <Shield className="w-3 h-3" />,
+      icon: <Receipt className="w-3 h-3" />,
       label: `My Passes (${userPasses.length})`,
-      action: () => router.push('/pass'),
+      action: () => {
+        router.push('/account');
+        setIsDropdownOpen(false);
+      },
       color: 'text-primary'
+    },
+    {
+      icon: <Ticket className="w-3 h-3" />,
+      label: 'Buy Now',
+      action: () => {
+        router.push('/pass');
+        setIsDropdownOpen(false);
+      },
+      color: 'text-green-600 dark:text-green-400'
     },
     {
       icon: <Settings className="w-3 h-3" />,

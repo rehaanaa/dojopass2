@@ -37,21 +37,14 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = ({
 
       <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Payment Successful</h2>
       
-      {/* Updated Success Message with only Mail and Heart Icons */}
+      {/* Shortened Success Message */}
       <div className="space-y-2 mb-6">
         <div className="flex items-center justify-center space-x-2 text-gray-700 dark:text-gray-300">
-          <span>Your transaction has been completed successfully.</span>
-        </div>
-        <div className="flex items-center justify-center space-x-2 text-gray-700 dark:text-gray-300">
-          <span>Your passes will be added within 12hr in accounts</span>
+          <span>Payment successful! Passes will be added within 12hr.</span>
         </div>
         <div className="flex items-center justify-center space-x-2 text-gray-700 dark:text-gray-300">
           <Mail className="w-5 h-5 text-purple-500" />
-          <span>or sent over email!</span>
-        </div>
-        <div className="flex items-center justify-center space-x-2 text-gray-700 dark:text-gray-300">
-          <Heart className="w-5 h-5 text-pink-500" />
-          <span>Have a nice day!</span>
+          <span>Check your account or email!</span>
         </div>
       </div>
 

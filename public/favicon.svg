@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background with black color -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rectangle -->
+  <rect width="100" height="100" fill="url(#bg)" rx="15"/>
+
+  <!-- DojoPass Logo Design -->
+  <!-- Main circle/logo area -->
+  <circle cx="50" cy="45" r="15" fill="white" opacity="0.9"/>
+
+  <!-- DojoPass text -->
+  <text x="50" y="65" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle"
+ fill="white">DojoPass</text>
+
+  <!-- Small accent line -->
+  <line x1="25" y1="75" x2="75" y2="75" stroke="white" stroke-width="2" opacity="0.8"/>
+</svg>

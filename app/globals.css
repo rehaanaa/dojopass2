@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Line clamp utilities */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -108,6 +100,16 @@
     @apply text-gray-900 dark:text-gray-100;
   }
 
+  .mobile-2-rows {
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+    @media (min-width: 768px) {
+    .mobile-2-rows {
+      grid-template-rows: auto;
+    }
+  }
+
   .text-secondary {
     @apply text-gray-600 dark:text-gray-400;
   }
@@ -168,7 +170,25 @@
     border-color: #22c55e !important;
   }
 
-
+  /* Custom card hover effects */
+  .group:hover {
+    border-color: #22c55e !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  /* Ensure hover effects work in both light and dark modes */
+  .group:hover.border-gray-200 {
+    border-color: #22c55e !important;
+  }
+  
+  .group:hover.border-gray-700 {
+    border-color: #22c55e !important;
+  }
+  
+  /* Force hover effects with higher specificity */
+  .group:hover.border {
+    border-color: #22c55e !important;
+  }
   
   /* Ensure skeleton cards have proper height distribution */
   .animate-pulse.flex.flex-col {
@@ -183,6 +203,26 @@
   /* Ensure skeleton cards match actual card heights */
   .animate-pulse.h-full {
     min-height: 100%;
+  }
+  
+  /* Grid layout fixes to prevent overlapping */
+  .grid > * {
+    min-width: 0;
+  }
+  
+  /* Ensure cards don't overlap in grid */
+  .grid .w-full {
+    width: 100%;
+    min-width: 0;
+  }
+  
+  /* Card height consistency */
+  .min-h-\[200px\] {
+    min-height: 200px;
+  }
+  
+  .md\:min-h-\[240px\] {
+    min-height: 240px;
   }
 }
 

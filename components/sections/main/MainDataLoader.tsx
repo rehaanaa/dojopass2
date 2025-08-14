@@ -1,179 +1,231 @@
-'use client';
+// Utility functions for static data - not a React component
+export const platforms = [
+  {
+    id: 1,
+    title: 'Game Pass',
+    description: 'Access to premium console gaming platforms including PlayStation, Steam, Xbox, and more. Get exclusive games, DLCs, and gaming content.',
+    image_url: '/landing/gaming-logo.png',
+    features: [
+      { name: 'PlayStation Plus' },
+      { name: 'Steam Premium' },
+      { name: 'Xbox Game Pass' },
+      { name: 'Cloud Gaming Support' },
+      { name: 'Cross-Platform Sync' },
+      { name: 'Priority Customer Support' }
+    ],
+    offers: ['Free 7-day trial', '50% off first month', 'Family plan available']
+  },
+  {
+    id: 2,
+    title: 'AI Pass',
+    description: 'Unlock the power of artificial intelligence with access to ChatGPT Pro, Claude 3, and other cutting-edge AI tools.',
+    image_url: '/landing/ai-pass.png',
+    features: [
+      { name: 'ChatGPT Pro Access' },
+      { name: 'Claude 3 Integration' },
+      { name: 'Advanced AI Models' },
+      { name: 'Custom AI Training' },
+      { name: 'API Access' },
+      { name: 'Priority Processing' }
+    ],
+    offers: ['Free credits included', 'Unlimited requests', 'Premium support']
+  },
+  {
+    id: 3,
+    title: 'Design & Creative',
+    description: 'Professional design tools including Canva Premium, Figma Pro, Adobe Creative Suite, and more.',
+    image_url: '/landing/design-pass.png',
+    features: [
+      { name: 'Canva Premium' },
+      { name: 'Figma Pro Features' },
+      { name: 'Adobe Creative Suite' },
+      { name: 'Premium Templates' },
+      { name: 'Cloud Storage' },
+      { name: 'Team Collaboration' }
+    ],
+    offers: ['Free templates', 'Unlimited exports', 'Premium fonts']
+  },
+  {
+    id: 4,
+    title: 'Streaming & Entertainment',
+    description: 'Premium streaming services including Disney+, Netflix, Spotify, and more with ad-free experience.',
+    image_url: '/landing/streaming-pass.png',
+    features: [
+      { name: 'Disney+ Premium' },
+      { name: 'Netflix Premium' },
+      { name: 'Spotify Premium' },
+      { name: 'Ad-Free Experience' },
+      { name: 'Offline Downloads' },
+      { name: 'Multiple Screens' }
+    ],
+    offers: ['Free month trial', 'Family plan discount', 'Student discount']
+  },
+  {
+    id: 5,
+    title: 'Gift Pass',
+    description: 'Premium gaming access including Valorant, PlayStation, Steam, Xbox, and other gaming platforms.',
+    image_url: '/landing/gift-pass.png',
+    features: [
+      { name: 'Valorant Premium' },
+      { name: 'PlayStation Plus' },
+      { name: 'Steam Premium' },
+      { name: 'Xbox Game Pass' },
+      { name: 'Exclusive Content' },
+      { name: 'Priority Support' }
+    ],
+    offers: ['Free 7-day trial', '50% off first month', 'Family plan available']
+  },
+  {
+    id: 6,
+    title: 'Free Pass',
+    description: 'Completely free access to basic features and limited content across all platforms.',
+    image_url: '/landing/Canva-Free.png',
+    features: [
+      { name: 'Basic Features Access' },
+      { name: 'Limited Content' },
+      { name: 'Community Support' },
+      { name: 'Standard Quality' },
+      { name: 'Ad-Supported' },
+      { name: 'Basic Templates' }
+    ],
+    offers: ['100% Free', 'No credit card required', 'Basic support']
+  }
+];
 
-import React from 'react';
-import { Gamepad2, Zap, CheckCircle2, Bot, Clock, Star, Globe, Package, Music, Download, Headphones, Video, Tv, HardDrive, Theater, Sparkles, Languages } from 'lucide-react';
+export const loadStaticPasses = () => {
+  const staticPasses = [
+    {
+      id: 1,
+      platform_id: 1,
+      title: 'Game Pass Premium',
+      description: 'Premium console gaming access with exclusive content, DLCs, and cloud gaming features.',
+      price: 999,
+      duration: '3 Months',
+      image_url: '/landing/Game-Pass-Xbox.jpg',
+      features: [
+        { name: 'PlayStation Plus' },
+        { name: 'Steam Premium' },
+        { name: 'Xbox Game Pass' },
+        { name: 'Cloud Gaming' },
+        { name: 'Exclusive DLCs' },
+        { name: 'Priority Support' }
+      ],
+      offers: ['Free 7-day trial', '50% off first month', 'Family plan available']
+    },
+    {
+      id: 2,
+      platform_id: 2,
+      title: 'AI Pro Pass',
+      description: 'Advanced AI tools with unlimited access to ChatGPT Pro, Claude 3, and custom training.',
+      price: 1499,
+      duration: '1 Month',
+      image_url: '/landing/ChatGPT-5-Plus.png',
+      features: [
+        { name: 'ChatGPT Pro Access' },
+        { name: 'Claude 3 Integration' },
+        { name: 'Custom AI Training' },
+        { name: 'API Access' },
+        { name: 'Priority Processing' },
+        { name: 'Advanced Models' }
+      ],
+      offers: ['Free credits included', 'Unlimited requests', 'Premium support']
+    },
+    {
+      id: 3,
+      platform_id: 3,
+      title: 'Canva Pass',
+      description: 'Professional design tools with Canva Premium, Figma Pro, and Adobe Creative Suite for designers.',
+      price: 799,
+      duration: '2 Months',
+      image_url: '/pass/canva.png',
+      features: [
+        { name: 'Canva Premium' },
+        { name: 'Figma Pro Features' },
+        { name: 'Adobe Creative Suite' },
+        { name: 'Premium Templates' },
+        { name: 'Cloud Storage' },
+        { name: 'Team Collaboration' }
+      ],
+      offers: ['Free templates', 'Unlimited exports', 'Premium fonts']
+    },
+    {
+      id: 4,
+      platform_id: 4,
+      title: 'Disney Pass 3 Months',
+      description: 'Premium Disney+ streaming with exclusive content, 4K Ultra HD, and family entertainment.',
+      price: 1299,
+      duration: '3 Months',
+      image_url: '/pass/disney.png',
+      features: [
+        { name: 'Disney+ Premium' },
+        { name: '4K Ultra HD' },
+        { name: 'Exclusive Shows' },
+        { name: 'Ad-Free Experience' },
+        { name: 'Offline Downloads' },
+        { name: 'Multiple Screens' }
+      ],
+      offers: ['Free month trial', 'Family plan discount', 'Student discount']
+    },
+    {
+      id: 5,
+      platform_id: 5,
+      title: 'Gift Pass Premium',
+      description: 'Premium gaming access with exclusive skins, battle passes, and premium content.',
+      price: 599,
+      duration: '6 Months',
+      image_url: '/landing/gift-pass.png',
+      features: [
+        { name: 'Exclusive Content' },
+        { name: 'Premium Access' },
+        { name: 'Gift Cards' },
+        { name: 'Instant Delivery' },
+        { name: 'Multiple Options' },
+        { name: 'Secure Transactions' }
+      ],
+      offers: ['Gift cards available', 'Bulk discounts', 'Instant delivery']
+    },
+    {
+      id: 6,
+      platform_id: 6,
+      title: 'Plexity Pro Pass',
+      description: 'Advanced AI-powered platform with premium features, unlimited access, and priority support.',
+      price: 1999,
+      duration: '1 Month',
+      image_url: '/landing/perpexity.jpg',
+      features: [
+        { name: 'Advanced AI Models' },
+        { name: 'Unlimited Queries' },
+        { name: 'Premium Content Access' },
+        { name: 'Custom AI Training' },
+        { name: 'API Integration' },
+        { name: 'Priority Support' }
+      ],
+      offers: ['Free trial included', 'Unlimited access', 'Premium support']
+    }
+  ];
+  return staticPasses;
+};
 
-export default function MainDataLoader() {
-  const loadStaticPlatforms = () => {
-    const staticPlatforms = [
-      {
-        id: 1,
-        title: 'Gaming Pass',
-        description: 'Top up your game with codes & passes Steam, Xbox, PSN, and Nitro codes – delivered instantly.',
-        image_url: '/landing/Game-Pass-Xbox.jpg',
-        subtitle: 'Gaming',
-        features: [
-          { name: 'PlayStation, Steam, Xbox', icon: <Gamepad2 className="w-4 h-4" /> },
-          { name: 'Instant Code', icon: <Zap className="w-4 h-4" /> },
-          { name: '100% Valid', icon: <CheckCircle2 className="w-4 h-4" /> }
-        ]
-      },
-      {
-        id: 2,
-        title: 'AI Pass',
-        description: 'ChatGPT, Claude, Gemini & more Unlock premium access to the smartest AI tools in the world.',
-        image_url: '/landing/ChatGPT-5-Plus.png',
-        subtitle: 'AI Tools',
-        features: [
-          { name: 'ChatGPT Pro, Claude 3', icon: <Bot className="w-4 h-4" /> },
-          { name: '30 Days Access', icon: <Clock className="w-4 h-4" /> },
-          { name: 'Instant Login', icon: <Zap className="w-4 h-4" /> }
-        ]
-      },
-      {
-        id: 3,
-        title: 'Design Pass',
-        description: 'Canva, Figma, Adobe & more Pro design tools for freelancers, editors, and agencies.',
-        image_url: '/landing/Canva-Free.png',
-        subtitle: 'Design',
-        features: [
-          { name: 'Pro Creative Tools', icon: <CheckCircle2 className="w-4 h-4" /> },
-          { name: 'Team Invites', icon: <Star className="w-4 h-4" /> },
-          { name: 'Instant Access', icon: <Zap className="w-4 h-4" /> }
-        ]
-      },
-      {
-        id: 4,
-        title: 'Gift Pass',
-        description: 'Cards & credits for anything digital Digital gift cards and top-up credits for your favorite stores, platforms, and games.',
-        image_url: '/landing/gift-pass.png',
-        subtitle: 'Gift Cards',
-        features: [
-          { name: 'Instant code delivery', icon: <Zap className="w-4 h-4" /> },
-          { name: 'Multiple currency options', icon: <Globe className="w-4 h-4" /> },
-          { name: 'Wide range: Amazon, Flipkart, Google Play', icon: <Package className="w-4 h-4" /> }
-        ]
-      },
-      {
-        id: 5,
-        title: 'Streaming Pass',
-        description: 'Netflix, Spotify, YouTube Premium & more Premium streaming services for unlimited entertainment.',
-        image_url: '/landing/streaming-pass.png',
-        subtitle: 'Streaming',
-        features: [
-          { name: 'Ad-Free Music', icon: <Music className="w-4 h-4" /> },
-          { name: '4K Ultra HD', icon: <Video className="w-4 h-4" /> },
-          { name: 'Multiple Screens', icon: <Tv className="w-4 h-4" /> }
-        ]
-      }
-    ];
-    return staticPlatforms;
-  };
-
-  const loadStaticPasses = () => {
-    const staticPasses = [
-      {
-        id: 1,
-        title: 'ChatGPT 5 Plus',
-        description: 'Access to GPT-4, advanced features, and priority support',
-        price: 1999,
-        duration_days: 30,
-        platform_id: 2,
-        image_url: '/landing/ChatGPT-5-Plus.png',
-        features: [
-          { name: 'GPT-4 Access', icon: <Bot className="w-4 h-4" /> },
-          { name: 'Priority Support', icon: <Star className="w-4 h-4" /> },
-          { name: 'Advanced Features', icon: <Zap className="w-4 h-4" /> }
-        ],
-        offers: [{ title: 'New User Discount', discount: '20% OFF' }]
-      },
-      {
-        id: 2,
-        title: 'Spotify Premium',
-        description: 'Ad-free music, offline downloads, and high-quality audio',
-        price: 999,
-        duration_days: 30,
-        platform_id: 5,
-        image_url: '/landing/spotify.png',
-        features: [
-          { name: 'Ad-Free Music', icon: <Music className="w-4 h-4" /> },
-          { name: 'Offline Downloads', icon: <Download className="w-4 h-4" /> },
-          { name: 'High Quality Audio', icon: <Headphones className="w-4 h-4" /> }
-        ],
-        offers: [{ title: 'Student Discount', discount: '50% OFF' }]
-      },
-      {
-        id: 3,
-        title: 'Netflix Premium',
-        description: '4K Ultra HD streaming with multiple screens',
-        price: 1499,
-        duration_days: 30,
-        platform_id: 5,
-        image_url: '/landing/netflix.png',
-        features: [
-          { name: '4K Ultra HD', icon: <Video className="w-4 h-4" /> },
-          { name: 'Multiple Screens', icon: <Tv className="w-4 h-4" /> },
-          { name: 'Offline Viewing', icon: <HardDrive className="w-4 h-4" /> }
-        ],
-        offers: [{ title: 'Family Plan', discount: 'Save 30%' }]
-      },
-      {
-        id: 4,
-        title: 'Canva Pro',
-        description: 'Professional design tools for teams and collaboration',
-        price: 799,
-        duration_days: 30,
-        platform_id: 3,
-        image_url: '/landing/Canva-Free.png',
-        features: [
-          { name: 'Pro Creative Tools', icon: <CheckCircle2 className="w-4 h-4" /> },
-          { name: 'Team Invites', icon: <Star className="w-4 h-4" /> },
-          { name: 'Instant Access', icon: <Zap className="w-4 h-4" /> }
-        ],
-        offers: [{ title: 'Team Bundle', discount: '25% OFF' }]
-      },
-      {
-        id: 5,
-        title: 'Xbox Game Pass',
-        description: 'Access to hundreds of high-quality games for Xbox and PC',
-        price: 500,
-        duration_days: 365,
-        platform_id: 1,
-        image_url: '/landing/Game-Pass-Xbox.jpg',
-        features: [
-          { name: 'PlayStation, Steam, Xbox', icon: <Gamepad2 className="w-4 h-4" /> },
-          { name: 'Instant Code', icon: <Zap className="w-4 h-4" /> },
-          { name: '100% Valid', icon: <CheckCircle2 className="w-4 h-4" /> }
-        ],
-        offers: [{ title: 'Bulk Purchase', discount: '10% OFF' }]
-      }
-    ];
-    return staticPasses;
-  };
-
-  const loadPasses = async () => {
-    try {
-      const response = await fetch('/api/passes');
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Passes API response:', result);
-        
-        // Extract data from the API response structure
-        const passesData = result.data || result;
-        console.log('Passes data:', passesData);
-        console.log('Passes type:', typeof passesData);
-        console.log('Passes is array:', Array.isArray(passesData));
-        
-        return Array.isArray(passesData) ? passesData : [];
-      } else {
-        console.error('Failed to fetch passes');
-        return [];
-      }
-    } catch (error) {
-      console.error('Error fetching passes:', error);
+export const loadPasses = async () => {
+  try {
+    const response = await fetch('/api/passes');
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Passes API response:', result);
+      
+      // Extract data from the API response structure
+      const passesData = result.data || result;
+      console.log('Passes data:', passesData);
+      console.log('Passes type:', typeof passesData);
+      console.log('Passes is array:', Array.isArray(passesData));
+      
+      return Array.isArray(passesData) ? passesData : [];
+    } else {
+      console.error('Failed to fetch passes');
       return [];
     }
-  };
-
-  return { loadStaticPlatforms, loadStaticPasses, loadPasses };
-}
+  } catch (error) {
+    console.error('Error fetching passes:', error);
+    return [];
+  }
+};

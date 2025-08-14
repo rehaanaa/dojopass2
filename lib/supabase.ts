@@ -1,14 +1,17 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js'
 
-// Use the original Supabase URL for authentication operations
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mbzxsvhuswrowjlujhco.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-// Create client-side Supabase client (for components that need it)
-export const supabase = createClient(
-  supabaseUrl, 
-  supabaseAnonKey || 'placeholder-key'
-);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce',
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dojopass.store'}/auth/callback`
+  }
+})
 
 // Server-side Supabase client with service role key (for API routes only)
 export const createServerSupabaseClient = () => {
@@ -21,5 +24,10 @@ export const createServerSupabaseClient = () => {
     return null;
   }
   
-  return createClient(originalSupabaseUrl, supabaseServiceKey);
+  return createClient(originalSupabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
 };

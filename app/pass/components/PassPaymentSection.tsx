@@ -58,20 +58,20 @@ export default function PassPaymentSection({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-      {/* Left Panel - Payment Method Selection */}
+      {/* Right Panel - Checkout Details (Now on Left) */}
       <div className="pr-0">
-        <PayMethod
-          onPaymentSubmit={onPaymentSubmit}
-          isProcessing={isProcessing}
-        />
-      </div>
-      
-      {/* Right Panel - Checkout Details */}
-      <div className="pl-0 -ml-1">
         <CheckoutDetails
           selectedPlatform={selectedPlatform}
           selectedPass={selectedPass}
           onBack={onBackToPasses}
+        />
+      </div>
+      
+      {/* Left Panel - Payment Method Selection (Now on Right) */}
+      <div className="pl-0 -ml-1">
+        <PayMethod
+          onPaymentSubmit={onPaymentSubmit}
+          isProcessing={isProcessing}
         />
       </div>
     </div>

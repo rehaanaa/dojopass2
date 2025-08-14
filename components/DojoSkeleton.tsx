@@ -25,31 +25,31 @@ export const DojoGridSkeleton: React.FC<DojoGridSkeletonProps> = ({ count, varia
   if (variant === 'pass') {
     // Pass card skeleton - matches PassCard structure exactly
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
         {Array.from({ length: count }).map((_, index) => (
-          <div key={index} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-pulse h-full flex flex-col">
+          <div key={index} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-pulse h-auto min-h-[60px] md:min-h-[100px] lg:min-h-[140px] flex flex-col">
             {/* CardHeader */}
-            <div className="p-3 pb-1">
+            <div className="p-1 md:p-2 pb-0.5">
               {/* Image skeleton */}
-              <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded-lg mb-2"></div>
+              <div className="w-full h-12 md:h-24 bg-gray-200 dark:bg-gray-700 rounded-lg mb-0.5 md:mb-1"></div>
               
               {/* Pass ID and Platform ID skeleton */}
-              <div className="mb-1 flex items-center justify-between">
+              <div className="mb-0.5 flex items-center justify-between">
                 <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
                 <div className="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
               </div>
               
               {/* Title skeleton */}
-              <div className="w-3/4 h-3 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
+              <div className="w-3/4 h-3 bg-gray-200 dark:bg-gray-700 rounded mb-0.5"></div>
               
               {/* Description skeleton */}
-              <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+              <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
             </div>
             
             {/* CardContent */}
-            <div className="p-3 pt-0">
+            <div className="p-1 md:p-2 pt-0">
               {/* Price and Duration skeleton */}
-              <div className="mb-2">
+              <div className="mb-1">
                 <div className="flex items-center justify-between">
                   <div className="w-14 h-4 bg-green-200 dark:bg-green-800 rounded"></div>
                   <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
@@ -57,12 +57,12 @@ export const DojoGridSkeleton: React.FC<DojoGridSkeletonProps> = ({ count, varia
               </div>
               
               {/* Features skeleton */}
-              <div className="mb-2">
-                <div className="flex items-center mb-1">
+              <div className="mb-1">
+                <div className="flex items-center mb-0.5">
                   <div className="w-3 h-3 bg-yellow-200 dark:bg-yellow-700 rounded mr-1"></div>
                   <div className="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <div className="flex items-center">
                     <div className="w-3 h-3 bg-blue-200 dark:bg-blue-700 rounded mr-1"></div>
                     <div className="w-2/3 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
@@ -75,8 +75,8 @@ export const DojoGridSkeleton: React.FC<DojoGridSkeletonProps> = ({ count, varia
               </div>
               
               {/* Offers skeleton */}
-              <div className="mb-2">
-                <div className="flex items-center mb-1">
+              <div className="mb-1">
+                <div className="flex items-center mb-0.5">
                   <div className="w-3 h-3 bg-green-200 dark:bg-green-700 rounded mr-1"></div>
                   <div className="w-14 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
                 </div>
@@ -85,7 +85,7 @@ export const DojoGridSkeleton: React.FC<DojoGridSkeletonProps> = ({ count, varia
             </div>
             
             {/* CardFooter */}
-            <div className="p-3 pt-0 border-t border-gray-200 dark:border-gray-700 mt-auto">
+            <div className="p-1 md:p-2 pt-0 border-t border-gray-200 dark:border-gray-700 mt-auto">
               <div className="flex justify-between items-center w-full">
                 <div className="text-left">
                   <div className="w-14 h-4 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
@@ -104,28 +104,28 @@ export const DojoGridSkeleton: React.FC<DojoGridSkeletonProps> = ({ count, varia
 
   // Platform card skeleton - matches PlatformCard structure exactly
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-pulse h-full flex flex-col">
+        <div key={index} className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg animate-pulse h-auto min-h-[60px] md:min-h-[100px] lg:min-h-[140px] flex flex-col">
           {/* CardHeader */}
-          <div className="p-2 pb-1">
+          <div className="p-1 md:p-2 pb-0.5">
             {/* Image skeleton */}
-            <div className="w-full h-28 bg-gray-200 dark:bg-gray-700 rounded-lg mb-2"></div>
+            <div className="w-full h-12 md:h-24 bg-gray-200 dark:bg-gray-700 rounded-lg mb-0.5 md:mb-1"></div>
             
             {/* Platform ID skeleton */}
-            <div className="mb-1">
+            <div className="mb-0.5">
               <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded"></div>
             </div>
             
             {/* Title skeleton */}
-            <div className="w-3/4 h-3 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
+            <div className="w-3/4 h-3 bg-gray-200 dark:bg-gray-700 rounded mb-0.5"></div>
             
             {/* Description skeleton */}
-            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
           </div>
           
           {/* CardContent */}
-          <div className="p-3 pt-0">
+          <div className="p-1 md:p-2 pt-0">
             {/* Features skeleton */}
             <div className="mb-3">
               <div className="flex items-center mb-1">

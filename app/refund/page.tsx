@@ -61,8 +61,12 @@ const RefundPolicyPage: React.FC = () => {
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8 mr-2" />
-                <h1 className="text-xl font-bold text-green-600 dark:text-green-400">DojoPass</h1>
+                <img 
+                  src="/pass/dojopass.png" 
+                  alt="DojoPass Logo" 
+                  className="w-16 h-16 mr-2 object-contain cursor-pointer"
+                  onClick={() => window.location.href = '/'}
+                />
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -79,8 +83,8 @@ const RefundPolicyPage: React.FC = () => {
             <div className="text-green-600 dark:text-green-400 mb-4">
               <Shield className="w-8 h-8 mx-auto" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Refund Policy</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400">Our commitment to customer satisfaction</p>
+            <h1 className="text-4xl font-bold text-black dark:text-white mb-4">Refund Policy</h1>
+            <p className="text-lg text-black dark:text-white">Our commitment to customer satisfaction</p>
           </div>
         </div>
       </section>
@@ -89,14 +93,14 @@ const RefundPolicyPage: React.FC = () => {
       <section className="py-16 bg-gray-50 dark:bg-black transition-colors duration-200">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">Refund Terms</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">Understanding our refund policy</p>
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-3">Refund Terms</h2>
+            <p className="text-lg text-black dark:text-white">Understanding our refund policy</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6">
             {refundTerms.map((term, index) => (
               <div key={index} className="text-left">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{term.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">{term.description}</p>
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">{term.title}</h3>
+                <p className="text-black dark:text-white leading-relaxed">{term.description}</p>
               </div>
             ))}
           </div>
@@ -107,8 +111,8 @@ const RefundPolicyPage: React.FC = () => {
       <section className="py-16 bg-white dark:bg-black transition-colors duration-200">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">Refund Process</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">How to request a refund</p>
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-3">Refund Process</h2>
+            <p className="text-lg text-black dark:text-white">How to request a refund</p>
           </div>
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
@@ -118,8 +122,8 @@ const RefundPolicyPage: React.FC = () => {
                     {step.step}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+                    <h3 className="text-lg font-semibold text-black dark:text-white mb-2">{step.title}</h3>
+                    <p className="text-black dark:text-white leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               ))}
@@ -132,13 +136,13 @@ const RefundPolicyPage: React.FC = () => {
       <section className="py-16 bg-gray-50 dark:bg-black transition-colors duration-200">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">Important Notes</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">Things to keep in mind</p>
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-3">Important Notes</h2>
+            <p className="text-lg text-black dark:text-white">Things to keep in mind</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Refund Eligibility</h3>
-              <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                                <h3 className="text-lg font-semibold text-black dark:text-white mb-3">Refund Eligibility</h3>
+                  <ul className="space-y-2 text-black dark:text-white">
                 <li className="flex items-start">
                   <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                   <span>Refund requests must be made within 24 hours of purchase</span>
@@ -171,10 +175,14 @@ const RefundPolicyPage: React.FC = () => {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center mb-4">
-                <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8 mr-3" />
-                <h3 className="text-2xl font-bold text-white">DojoPass</h3>
-              </div>
+                          <div className="flex items-center mb-4">
+              <img 
+                src="/pass/dojopass.png" 
+                alt="DojoPass Logo" 
+                className="w-20 h-20 mr-3 object-contain"
+              />
+              <h3 className="text-2xl font-bold text-white">DojoPass</h3>
+            </div>
               <p className="text-gray-300 mb-6">
                 India's fastest digital pass store for ChatGPT Plus, Spotify Premium, Domains, Netflix & more.
               </p>

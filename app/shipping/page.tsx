@@ -64,8 +64,12 @@ const ShippingPage: React.FC = () => {
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8 mr-2" />
-                <h1 className="text-xl font-bold text-green-600 dark:text-green-400">DojoPass</h1>
+                <img 
+                  src="/pass/dojopass.png" 
+                  alt="DojoPass Logo" 
+                  className="w-16 h-16 mr-2 object-contain cursor-pointer"
+                  onClick={() => window.location.href = '/'}
+                />
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -185,10 +189,14 @@ const ShippingPage: React.FC = () => {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center mb-4">
-                <img src="/passlogo.png" alt="DojoPass Logo" className="w-8 h-8 mr-3" />
-                <h3 className="text-2xl font-bold text-white">DojoPass</h3>
-              </div>
+                          <div className="flex items-center mb-4">
+              <img 
+                src="/pass/dojopass.png" 
+                alt="DojoPass Logo" 
+                className="w-20 h-20 mr-3 object-contain"
+              />
+              <h3 className="text-2xl font-bold text-white">DojoPass</h3>
+            </div>
               <p className="text-gray-300 mb-6">
                 India's fastest digital pass store for ChatGPT Plus, Spotify Premium, Domains, Netflix & more.
               </p>

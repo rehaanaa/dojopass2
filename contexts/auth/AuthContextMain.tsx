@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { signInWithGoogle } from './AuthGoogleSignIn';
-import AuthSessionManager from './AuthSessionManager';
+import { getInitialSession, handleAuthStateChange } from './AuthSessionManager';
 
 interface AuthContextType {
   user: User | null;
@@ -32,9 +32,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [dojoUser, setDojoUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  // Import all auth utilities
-  const { getInitialSession, handleAuthStateChange } = AuthSessionManager();
 
   // Auto-login function using stored email
   const autoLogin = async () => {

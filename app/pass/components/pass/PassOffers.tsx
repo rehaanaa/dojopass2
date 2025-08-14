@@ -44,74 +44,72 @@ export default function PassOffers({ formattedOffers }: PassOffersProps) {
 
   if (!formattedOffers || formattedOffers.length === 0) {
     return (
-      <CardContent className="p-3 pt-0">
-        <div className="mb-3">
-          <div className="flex items-center mb-1">
-            <Tag className="w-3 h-3 mr-1 text-gray-400 dark:text-gray-500" />
-            <span className="text-xs font-medium text-gray-400 dark:text-gray-500">Offers</span>
+      <CardContent className="p-1 md:p-2 pt-0">
+        <div className="mb-1 md:mb-2">
+          <div className="flex items-center mb-0.5">
+            <Tag className="w-2 h-2 md:w-3 md:h-3 mr-0.5 md:mr-1 text-gray-400 dark:text-gray-500" />
+            <span className="text-[10px] md:text-xs font-medium text-gray-400 dark:text-gray-500">Offers</span>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500">No special offers available</p>
+          <p className="text-[8px] md:text-xs text-gray-400 dark:text-gray-500">No special offers available</p>
         </div>
       </CardContent>
     );
   }
 
   return (
-    <CardContent className="p-3 pt-0">
+    <CardContent className="p-1 md:p-2 pt-0">
       {/* Offers */}
-      <div className="mb-3">
-        <div className="flex items-center mb-1">
-          <Tag className="w-3 h-3 mr-1 text-orange-600 dark:text-orange-400" />
-          <span className="text-xs font-medium text-gray-900 dark:text-gray-100">Offers ({formattedOffers.length})</span>
-        </div>
-        <ul className="space-y-1">
-          {formattedOffers.map((offer: any, index: number) => {
-            if (offer && typeof offer === 'object') {
-              // Determine the icon based on offer content
-              let iconName = offer.icon || 'star';
-              if (!offer.icon) {
-                if (offer.title?.toLowerCase().includes('discount') || offer.discount?.toLowerCase().includes('off')) {
-                  iconName = 'indian-rupee';
-                } else if (offer.title?.toLowerCase().includes('free')) {
-                  iconName = 'gift';
-                } else if (offer.title?.toLowerCase().includes('bonus')) {
-                  iconName = 'star';
-                } else if (offer.title?.toLowerCase().includes('limited')) {
-                  iconName = 'fire';
+      <div className="mb-1 md:mb-2">
+        <div className="flex items-center mb-0.5">
+          <Tag className="w-2 h-2 md:w-3 md:h-3 mr-0.5 md:mr-1 text-orange-600 dark:text-orange-400" />
+                      <span className="text-[8px] md:text-[10px] font-medium text-gray-900 dark:text-gray-100">Offers ({formattedOffers.length})</span>
+          </div>
+          <ul className="space-y-0.5">
+            {formattedOffers.map((offer: any, index: number) => {
+              if (offer && typeof offer === 'object') {
+                // Determine the icon based on offer content
+                let iconName = offer.icon || 'star';
+                if (!offer.icon) {
+                  if (offer.title?.toLowerCase().includes('discount') || offer.discount?.toLowerCase().includes('off')) {
+                    iconName = 'indian-rupee';
+                  } else if (offer.title?.toLowerCase().includes('free')) {
+                    iconName = 'gift';
+                  } else if (offer.title?.toLowerCase().includes('bonus')) {
+                    iconName = 'star';
+                  } else if (offer.title?.toLowerCase().includes('limited')) {
+                    iconName = 'fire';
+                  }
                 }
+                
+                // Create display text combining title and discount
+                let offerText = '';
+                if (offer.title && offer.discount) {
+                  offerText = `${offer.title}: ${offer.discount}`;
+                } else if (offer.title) {
+                  offerText = offer.title;
+                } else if (offer.discount) {
+                  offerText = offer.discount;
+                } else if (offer.name) {
+                  offerText = offer.name;
+                } else if (offer.text) {
+                  offerText = offer.text;
+                } else {
+                  offerText = 'Special Offer';
+                }
+                
+                console.log('🔍 Rendering offer:', { iconName, offerText });
+                
+                return (
+                  <li key={index} className="flex items-center text-[6px] md:text-[8px] text-green-600 dark:text-green-400">
+                    <span className="mr-0.5 md:mr-1 flex-shrink-0">
+                      {getOfferIcon(iconName)}
+                    </span>
+                    <span className="font-medium">{offerText}</span>
+                  </li>
+                );
               }
-              
-              // Create display text combining title and discount
-              let offerText = '';
-              if (offer.title && offer.discount) {
-                offerText = `${offer.title}: ${offer.discount}`;
-              } else if (offer.title) {
-                offerText = offer.title;
-              } else if (offer.discount) {
-                offerText = offer.discount;
-              } else if (offer.name) {
-                offerText = offer.name;
-              } else if (offer.text) {
-                offerText = offer.text;
-              } else {
-                offerText = 'Special Offer';
-              }
-              
-              const offerColor = getOfferColor(offer);
-              
-              console.log('🔍 Rendering offer:', { iconName, offerText, offerColor });
-              
-              return (
-                <li key={index} className={`flex items-center text-xs ${offerColor}`}>
-                  <span className="mr-1 flex-shrink-0">
-                    {getOfferIcon(iconName)}
-                  </span>
-                  <span className="font-medium">{offerText}</span>
-                </li>
-              );
-            }
-            return null;
-          })}
+              return null;
+            })}
         </ul>
       </div>
     </CardContent>

@@ -31,8 +31,8 @@ export default function FeaturesSection() {
     <section className="py-16 bg-background transition-colors duration-200">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-3">Why Choose DojoPass?</h2>
-          <p className="text-lg text-muted-foreground">We make buying digital passes simple and secure</p>
+          <h2 className="text-2xl font-bold text-foreground mb-3">Why Choose DojoPass?</h2>
+          <p className="text-base text-muted-foreground">We make buying digital passes simple and secure</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
@@ -43,8 +43,8 @@ export default function FeaturesSection() {
               <div className="w-12 h-12 flex items-center justify-center mx-auto mb-3">
                 {feature.icon}
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-foreground">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground">{feature.description}</p>
+              <h3 className="text-base font-semibold mb-2 text-foreground">{feature.title}</h3>
+              <p className="text-xs text-muted-foreground">{feature.description}</p>
             </div>
           ))}
         </div>

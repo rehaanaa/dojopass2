@@ -16,24 +16,19 @@ interface PassCardMainProps {
 }
 
 export default function PassCardMain({ pass, onClick }: PassCardMainProps) {
-  const { parseFeatures, parseOffers, formatOffers } = PassDataParser();
+  const { parseFeatures } = PassDataParser();
 
   const features = parseFeatures(pass.features);
-  const offers = parseOffers(pass.offers);
-  const formattedOffers = formatOffers(pass.offers);
   
   console.log('🔍 PassCardMain - pass data:', {
     features: pass.features,
-    offers: pass.offers,
-    parsedFeatures: features,
-    parsedOffers: offers,
-    formattedOffers: formattedOffers
+    parsedFeatures: features
   });
 
   return (
     <div
       onClick={() => onClick(pass)}
-      className="cursor-pointer bg-white dark:bg-black border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white h-full flex flex-col rounded-lg p-0 transition-colors duration-300 hover:border-primary"
+      className="cursor-pointer bg-white dark:bg-black border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white h-auto flex flex-col rounded-lg p-0 transition-all duration-300 hover:border-green-500 hover:shadow-lg"
     >
       {/* Pass Header */}
       <PassHeader pass={pass} />
@@ -43,9 +38,6 @@ export default function PassCardMain({ pass, onClick }: PassCardMainProps) {
       
       {/* Pass Features */}
       <PassFeatures features={features} />
-      
-      {/* Pass Offers */}
-      <PassOffers formattedOffers={formattedOffers} />
       
       {/* Pass Footer */}
       <PassFooter passId={pass.id} />
