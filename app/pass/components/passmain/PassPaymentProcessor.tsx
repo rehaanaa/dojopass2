@@ -85,7 +85,7 @@ export default function PassPaymentProcessor() {
                   payment_amount: selectedPass.price,
                   purchase_date: result.data.purchase_date,
                   status: result.data.status,
-                  expiry_date: result.data.expiry_date,
+                  expiry_date: result.data.expires_at ?? result.data.expiry_date,
                   transaction_id: transactionId
                 };
                 
