@@ -1,17 +1,35 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../contexts/CartContext';
+'use client';
+
+import React from 'react';
+import { useCart } from '../contexts/CartContext';
 
 const CartDisplay = () => {
-  const { cartItems } = useContext(CartContext);
+  const { state, dispatch } = useCart();
+
+  const handleRemove = (item) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: item });
+  };
+
+  const totalPrice = state.items.reduce((total, item) => total + item.price, 0);
 
   return (
     <div>
-      <h2>Cart Items</h2>
-      <ul>
-        {cartItems.map((item, index) => (
-          <li key={index}>{item.name} - ${item.price}</li>
-        ))}
-      </ul>
+      <h2>Cart</h2>
+      {state.items.length > 0 ? (
+        <ul>
+          {state.items.map((item) => (
+            <li key={item.id}>
+              <span>{item.name} - ${item.price.toFixed(2)}</span>
+              <button onClick={() => handleRemove(item)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Your cart is empty.</p>
+      )}
+      <div>
+        <strong>Total Price: ${totalPrice.toFixed(2)}</strong>
+      </div>
     </div>
   );
 };

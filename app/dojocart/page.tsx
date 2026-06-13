@@ -1,21 +1,13 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+'use client';
+
+import React from 'react';
+import CartDisplay from '@/components/CartDisplay';
 
 const DojoCart = () => {
-  const { cartItems } = useContext(CartContext);
-
   return (
     <div>
-      <h1>Your Cart</h1>
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <ul>
-          {cartItems.map((item, index) => (
-            <li key={index}>{item.name} - ${item.price}</li>
-          ))}
-        </ul>
-      )}
+      <h1>Your Shopping Cart</h1>
+      <CartDisplay />
     </div>
   );
 };
